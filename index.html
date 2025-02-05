@@ -159,10 +159,11 @@
         }
 
         .stat-card {
-            padding: 15px;
+            padding: 10px;
             border-radius: 10px;
             background: #f8f9fa;
             text-align: center;
+			animation: pulse 2s infinite;
         }
 
         @media (min-width: 600px) {
@@ -319,10 +320,17 @@
             const movil = ventasFiltradas.filter(v => v.pago === 'movil').reduce((a, b) => a + b.monto, 0);
             const total = efectivo + movil;
 
+            let nivelVentas = '';
+            if (totalBotellones >= 17) nivelVentas = '🚀 DÍA CON VENTAS ALTAS 🔥';
+            else if (totalBotellones >= 10) nivelVentas = '👍 DÍA MEDIO EN VENTAS';
+            else if (totalBotellones < 5) nivelVentas = '😟 DÍA BAJO EN VENTAS';
+
+
             document.getElementById('stats').innerHTML = `
                 <div class="stat-card">
                     <h3>Total Botellones</h3>
                     <h2>${totalBotellones}</h2>
+					<p>${nivelVentas}</p>
                 </div>
                 <div class="stat-card">
                     <h3>Litros Vendidos</h3>
