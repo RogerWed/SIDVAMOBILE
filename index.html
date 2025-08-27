@@ -1,451 +1,769 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIDVA</title>
     <link href="icon.png" rel="icon">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
         :root {
-            --primary: #2196F3;
-            --secondary: #4CAF50;
-            --danger: #f44336;
-            --touch-size: 50px;
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
         }
-
+        
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            background: #f0f4f8;
-            -webkit-tap-highlight-color: transparent;
-            padding-bottom: 70px;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
         }
-
+        
         .container {
             max-width: 100%;
-            padding: 10px;
+            padding: 15px;
+            margin: 0 auto;
         }
-
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            border-radius: 50px;
+            padding: 5px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-tab {
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
         .card {
             background: white;
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        
+        .form-group {
+            margin-bottom: 15px;
         }
-
-        input, select, textarea, button {
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input, select, textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             font-size: 16px;
-            background: white;
-            -webkit-appearance: none;
         }
-
+        
         button {
             background: var(--primary);
             color: white;
-            height: var(--touch-size);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        .btn-success {
+            background: var(--secondary);
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
             font-weight: bold;
-            transition: filter 0.2s;
-            touch-action: manipulation;
+            margin: 10px 0;
         }
-
-        button:active {
-            filter: brightness(90%);
-            transform: scale(0.98);
+        
+        .stat-title {
+            color: var(--gray);
+            font-size: 0.9rem;
         }
-
+        
         .sales-list {
-            margin-top: 20px;
-            max-height: 50vh;
+            max-height: 300px;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
         }
-
+        
         .sale-item {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            padding: 12px;
-            margin: 8px 0;
             background: white;
             border-radius: 8px;
-            position: relative;
-        }
-
-        .sale-item > div {
-            flex: 1 1 45%;
-            min-width: 120px;
-            padding: 5px;
-            font-size: 14px;
-        }
-
-        .status {
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            touch-action: none;
-            cursor: pointer;
-        }
-
-        .pending { background: #fff3cd; color: #856404; }
-        .paid { background: #d4edda; color: #155724; }
-
-        .mobile-bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            padding: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
             display: flex;
-            justify-content: space-around;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-
-        .filter-group {
-            margin-bottom: 15px;
-            display: flex;
-            gap: 10px;
-        }
-
-        #filtroFecha {
+        
+        .sale-info {
             flex: 1;
         }
-
-        .nav-button {
-            padding: 12px 20px;
-            border-radius: 25px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            font-size: 14px;
+        
+        .sale-actions {
+            display: flex;
+            gap: 5px;
         }
-
-        h1 {
-            font-size: 24px;
+        
+        .action-btn {
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-paid {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-pending {
+            background: #ffecb3;
+            color: #f57c00;
+        }
+        
+        .message-container {
             text-align: center;
             padding: 15px;
-            color: #333;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-weight: 500;
+            animation: pulse 2s infinite;
         }
-
-        h2 {
-            font-size: 20px;
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .low-sales {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .medium-sales {
+            background: #fff9c4;
+            color: #f9a825;
+        }
+        
+        .high-sales {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .search-box {
             margin-bottom: 15px;
-            color: #444;
+            position: relative;
         }
-
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 10px;
+        
+        .search-box i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
         }
-
-        .stat-card {
-            padding: 10px;
-            border-radius: 10px;
-            background: #f8f9fa;
-            text-align: center;
-			animation: pulse 2s infinite;
+        
+        .search-box input {
+            padding-left: 35px;
         }
-
-        @media (min-width: 600px) {
+        
+        @media (min-width: 768px) {
             .container {
-                max-width: 600px;
-                margin: 0 auto;
+                max-width: 750px;
             }
-        }
-		
-         footer {
-            text-align: center;
-            margin-top: 0px;
-            padding: 2px;
-            color: #666;
-            font-size: 0.9em;
+            
+            .stats-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Sistema de Ventas de Agua💧</h1>
+        <header>
+            <h1>💧 Sistema de Ventas de Agua</h1>
+            <p>Gestiona tus ventas de forma eficiente</p>
+        </header>
         
-        <div class="card" id="mainSection">
-            <div class="input-group">
-                <input type="date" id="fecha" required>
-                <input type="text" id="nombre" placeholder="Cliente" required>
-                <input type="number" id="cantidad" placeholder="Botellones" min="1" required>
-                <input type="number" id="litros" placeholder="Litros por botellón" min="1" required>
-                <input type="number" id="monto" placeholder="Monto (Bs)" min="0" step="0.01" required>
-                <select id="pago">
-                    <option value="efectivo">Efectivo</option>
-                    <option value="movil">Pago Móvil</option>
-                </select>
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-tab="registro">Registro</div>
+            <div class="nav-tab" data-tab="estadisticas">Estadísticas</div>
+            <div class="nav-tab" data-tab="acciones">Acciones</div>
+        </div>
+        
+        <!-- Sección de Registro -->
+        <div id="registro" class="tab-content active">
+            <div class="card">
+                <h2>Nueva Venta</h2>
+                <form id="sale-form">
+                    <div class="form-group">
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" id="fecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="comprador">Nombre del Comprador:</label>
+                        <input type="text" id="comprador" placeholder="Ingrese el nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="metodo-pago">Método de Pago:</label>
+                        <select id="metodo-pago" required>
+                            <option value="">Seleccione...</option>
+                            <option value="efectivo">Efectivo 💵</option>
+                            <option value="movil">Pago Móvil 📲</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad de Botellones:</label>
+                        <input type="number" id="cantidad" min="1" placeholder="Ej: 5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="litros">Litros por Botellón:</label>
+                        <input type="number" id="litros" min="1" value="20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="monto">Monto en Bs:</label>
+                        <input type="number" id="monto" min="0" step="0.01" placeholder="Ej: 25.50" required>
+                    </div>
+                    <button type="submit">Registrar Venta</button>
+                </form>
             </div>
-            <button onclick="agregarVenta()">➕ Registrar Venta</button>
-        </div>
-
-        <div class="card" id="statsSection">
-            <h2>📊 Estadísticas</h2>
-            <div class="stats-grid" id="stats"></div>
-        </div>
-
-        <div class="card" id="salesSection">
-            <h2>📋 Ventas</h2>
-            <div class="filter-group">
-                <input type="date" id="filtroFecha">
-                <button onclick="limpiarFiltro()" style="background: var(--secondary);">🔄 Limpiar</button>
+            
+            <div class="card">
+                <h2>Filtrar Ventas</h2>
+                <div class="form-group">
+                    <label for="filtro-fecha">Filtrar por Fecha:</label>
+                    <input type="date" id="filtro-fecha">
+                </div>
+                <div class="search-box">
+                    <i>🔍</i>
+                    <input type="text" id="buscar-nombre" placeholder="Buscar por nombre...">
+                </div>
             </div>
-            <div class="sales-list" id="sales-list"></div>
-        </div>
-
-        <div class="card" id="actionsSection">
-            <h2>⚙️ Acciones</h2>
-            <textarea id="observacion" placeholder="Observaciones..." rows="2"></textarea>
-            <div style="margin-top: 15px; display: flex; gap: 10px;">
-                <button onclick="generarCorteDia()" style="background: var(--secondary); flex: 1;">📄 Generar Cierre del Día</button>
-                <button onclick="reiniciarSistema()" style="background: var(--danger); flex: 1;">🔄 Reiniciar Sistema</button>
+            
+            <div class="card">
+                <h2>Ventas Registradas</h2>
+                <div id="lista-ventas" class="sales-list">
+                    <!-- Las ventas se cargarán aquí dinámicamente -->
+                </div>
             </div>
         </div>
-		
-        <div class="card" id="actionsSection">
-			<footer>
-                ©2025 RogerWed. | App Ver 5.0 | Interfaz HyperVission 3.0
-            </footer>	
-        </div>			
-		
+        
+        <!-- Sección de Estadísticas -->
+        <div id="estadisticas" class="tab-content">
+            <div class="card">
+                <h2>Estadísticas de Ventas</h2>
+                <div class="form-group">
+                    <label for="filtro-estadisticas">Filtrar por Fecha:</label>
+                    <input type="date" id="filtro-estadisticas">
+                </div>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-title">Total Botellones Vendidos</div>
+                    <div class="stat-value" id="total-botellones">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Botellones Pendientes</div>
+                    <div class="stat-value" id="botellones-pendientes">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Litros Vendidos</div>
+                    <div class="stat-value" id="litros-vendidos">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Efectivo 💵</div>
+                    <div class="stat-value" id="total-efectivo">0 Bs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Pago Móvil 📲</div>
+                    <div class="stat-value" id="total-movil">0 Bs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Total General</div>
+                    <div class="stat-value" id="total-general">0 Bs</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección de Acciones -->
+        <div id="acciones" class="tab-content">
+            <div class="card">
+                <h2>Mensaje del Día</h2>
+                <div id="mensaje-ventas" class="message-container">
+                    <!-- Mensaje animado según volumen de ventas -->
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Generar Corte del Día</h2>
+                <div class="form-group">
+                    <label for="observacion">Observación:</label>
+                    <textarea id="observacion" rows="3" placeholder="Escribe una observación para el corte..."></textarea>
+                </div>
+                <button id="generar-pdf" class="btn-success">📊 Generar Corte del Día</button>
+            </div>
+            
+            <div class="card">
+                <h2>Gestión de Datos</h2>
+                <p>¿Necesitas reiniciar todos los datos? Esta acción no se puede deshacer.</p>
+                <button id="reset-datos" class="btn-danger">🔄 Resetear Todos los Datos</button>
+            </div>
+        </div>
     </div>
-    <nav class="mobile-bottom-nav">
-        <button class="nav-button" onclick="scrollToSection('statsSection')">📊 Stats</button>
-        <button class="nav-button" onclick="scrollToSection('salesSection')">📋 Ventas</button>
-        <button class="nav-button" onclick="scrollToSection('actionsSection')">⚙️ Acciones</button>
-    </nav>
 
     <script>
-        let estadoApp = JSON.parse(localStorage.getItem('estadoVentas')) || {
-            ventas: [],
-            observacion: ''
-        };
-        let fechaFiltro = null;
-
-
-        // Funciones de navegación
-        function scrollToSection(sectionId) {
-            document.getElementById(sectionId).scrollIntoView({
-                behavior: 'smooth'
+        // Esperar a que se carguen las librerías de jsPDF
+        window.jsPDF = window.jspdf.jsPDF;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables globales
+            let ventas = JSON.parse(localStorage.getItem('ventas')) || [];
+            
+            // Elementos del DOM
+            const navTabs = document.querySelectorAll('.nav-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const saleForm = document.getElementById('sale-form');
+            const filtroFecha = document.getElementById('filtro-fecha');
+            const buscarNombre = document.getElementById('buscar-nombre');
+            const listaVentas = document.getElementById('lista-ventas');
+            const filtroEstadisticas = document.getElementById('filtro-estadisticas');
+            const mensajeVentas = document.getElementById('mensaje-ventas');
+            const generarPdfBtn = document.getElementById('generar-pdf');
+            const resetDatosBtn = document.getElementById('reset-datos');
+            
+            // Navegación entre pestañas
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Activar pestaña seleccionada
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Mostrar contenido correspondiente
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // Si es la pestaña de estadísticas, actualizarlas
+                    if (tabId === 'estadisticas') {
+                        actualizarEstadisticas();
+                    }
+                    
+                    // Si es la pestaña de acciones, actualizar mensaje
+                    if (tabId === 'acciones') {
+                        actualizarMensajeVentas();
+                    }
+                });
             });
-        }
-
-        // Funciones principales
-        function guardarEstado() {
-            localStorage.setItem('estadoVentas', JSON.stringify(estadoApp));
-        }
-
-        function agregarVenta() {
-            const nuevaVenta = {
-                fecha: document.getElementById('fecha').value,
-                nombre: document.getElementById('nombre').value,
-                cantidad: parseInt(document.getElementById('cantidad').value),
-                litros: parseInt(document.getElementById('litros').value),
-                monto: parseFloat(document.getElementById('monto').value),
-                pago: document.getElementById('pago').value,
-                estado: 'pending'
-            };
-
-            estadoApp.ventas.push(nuevaVenta);
-            guardarEstado();
-            actualizarInterfaz();
-        }
-
-        function getVentasFiltradas() {
-            if (!fechaFiltro) return estadoApp.ventas;
-            return estadoApp.ventas.filter(venta => venta.fecha === fechaFiltro);
-        }
-
-        function limpiarFiltro() {
-            fechaFiltro = null;
-            document.getElementById('filtroFecha').value = '';
-            actualizarInterfaz();
-        }
-
-        function actualizarInterfaz() {
-            mostrarVentas();
-            actualizarEstadisticas();
-            document.getElementById('observacion').value = estadoApp.observacion;
-        }
-
-        function mostrarVentas() {
-            const ventasFiltradas = getVentasFiltradas();
-            const lista = document.getElementById('sales-list');
-            lista.innerHTML = ventasFiltradas.map((venta, index) => {
-                const originalIndex = estadoApp.ventas.indexOf(venta);
-                return `
-                    <div class="sale-item">
-                        <div>📅 ${venta.fecha}</div>
-                        <div>👤 ${venta.nombre}</div>
-                        <div>💧 ${venta.cantidad} bot.</div>
-                        <div>⚖️ ${venta.litros}L</div>
-                        <div>💰 Bs ${venta.monto.toFixed(2)}</div>
-                        <div class="status ${venta.estado}" onclick="cambiarEstado(${originalIndex})">
-                            ${venta.estado === 'paid' ? 'Pagado ✅' : 'Pendiente ⏳'}
+            
+            // Establecer fecha actual por defecto
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('fecha').value = today;
+            
+            // Cargar fecha seleccionada del filtro desde localStorage si existe
+            const fechaFiltroGuardada = localStorage.getItem('fechaFiltro');
+            if (fechaFiltroGuardada) {
+                filtroFecha.value = fechaFiltroGuardada;
+            } else {
+                filtroFecha.value = today;
+            }
+            
+            // Cargar fecha seleccionada de estadísticas desde localStorage si existe
+            const fechaEstadisticasGuardada = localStorage.getItem('fechaEstadisticas');
+            if (fechaEstadisticasGuardada) {
+                filtroEstadisticas.value = fechaEstadisticasGuardada;
+            } else {
+                filtroEstadisticas.value = today;
+            }
+            
+            // Registrar nueva venta
+            saleForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const nuevaVenta = {
+                    id: Date.now(),
+                    fecha: document.getElementById('fecha').value,
+                    comprador: document.getElementById('comprador').value,
+                    metodoPago: document.getElementById('metodo-pago').value,
+                    cantidad: parseInt(document.getElementById('cantidad').value),
+                    litros: parseInt(document.getElementById('litros').value),
+                    monto: parseFloat(document.getElementById('monto').value),
+                    estado: 'pendiente' // Estado por defecto
+                };
+                
+                ventas.push(nuevaVenta);
+                guardarVentas();
+                actualizarListaVentas();
+                saleForm.reset();
+                document.getElementById('fecha').value = today;
+                document.getElementById('litros').value = 20;
+                
+                // Mostrar mensaje de éxito
+                alert('Venta registrada exitosamente!');
+            });
+            
+            // Filtrar ventas por fecha
+            filtroFecha.addEventListener('change', function() {
+                localStorage.setItem('fechaFiltro', this.value);
+                actualizarListaVentas();
+            });
+            
+            // Buscar ventas por nombre
+            buscarNombre.addEventListener('input', actualizarListaVentas);
+            
+            // Filtrar estadísticas por fecha
+            filtroEstadisticas.addEventListener('change', function() {
+                localStorage.setItem('fechaEstadisticas', this.value);
+                actualizarEstadisticas();
+            });
+            
+            // Generar PDF
+            generarPdfBtn.addEventListener('click', generarPDF);
+            
+            // Resetear datos
+            resetDatosBtn.addEventListener('click', function() {
+                if (confirm('¿Estás seguro de que quieres eliminar todos los datos? Esta acción no se puede deshacer.')) {
+                    ventas = [];
+                    localStorage.removeItem('fechaFiltro');
+                    localStorage.removeItem('fechaEstadisticas');
+                    guardarVentas();
+                    actualizarListaVentas();
+                    actualizarEstadisticas();
+                    actualizarMensajeVentas();
+                    alert('Todos los datos han sido eliminados.');
+                }
+            });
+            
+            // Funciones auxiliares
+            function guardarVentas() {
+                localStorage.setItem('ventas', JSON.stringify(ventas));
+            }
+            
+            function actualizarListaVentas() {
+                const fechaFiltro = filtroFecha.value;
+                const nombreFiltro = buscarNombre.value.toLowerCase();
+                
+                // Filtrar ventas
+                const ventasFiltradas = ventas.filter(venta => {
+                    const coincideFecha = fechaFiltro ? venta.fecha === fechaFiltro : true;
+                    const coincideNombre = nombreFiltro ? venta.comprador.toLowerCase().includes(nombreFiltro) : true;
+                    return coincideFecha && coincideNombre;
+                });
+                
+                // Mostrar ventas
+                listaVentas.innerHTML = '';
+                
+                if (ventasFiltradas.length === 0) {
+                    listaVentas.innerHTML = '<p>No hay ventas registradas para los filtros seleccionados.</p>';
+                    return;
+                }
+                
+                ventasFiltradas.forEach(venta => {
+                    const ventaElement = document.createElement('div');
+                    ventaElement.classList.add('sale-item');
+                    
+                    ventaElement.innerHTML = `
+                        <div class="sale-info">
+                            <strong>${venta.comprador}</strong> - ${venta.cantidad} botellones
+                            <div>${venta.fecha} - ${venta.metodoPago === 'efectivo' ? '💵 Efectivo' : '📲 Pago Móvil'} - ${venta.monto} Bs</div>
                         </div>
-                        <div>${venta.pago === 'efectivo' ? 'Efectivo 💵' : 'Pago Móvil 📱'}</div>
-                        <button onclick="eliminarVenta(${originalIndex})" style="background: var(--danger); width: 100%;">🗑️ Eliminar</button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function actualizarEstadisticas() {
-            const ventasFiltradas = getVentasFiltradas();
-            const totalBotellones = ventasFiltradas.reduce((a, b) => a + b.cantidad, 0);
-            const totalLitros = ventasFiltradas.reduce((a, b) => a + (b.cantidad * b.litros), 0);
-            const efectivo = ventasFiltradas.filter(v => v.pago === 'efectivo').reduce((a, b) => a + b.monto, 0);
-            const movil = ventasFiltradas.filter(v => v.pago === 'movil').reduce((a, b) => a + b.monto, 0);
-            const total = efectivo + movil;
-
-            let nivelVentas = '';
-            if (totalBotellones >= 17) nivelVentas = '🚀 DÍA CON VENTAS ALTAS 🔥';
-            else if (totalBotellones >= 10) nivelVentas = '👍 DÍA MEDIO EN VENTAS';
-            else if (totalBotellones < 5) nivelVentas = '😟 DÍA BAJO EN VENTAS';
-
-
-            document.getElementById('stats').innerHTML = `
-                <div class="stat-card">
-                    <h3>Total Botellones</h3>
-                    <h2>${totalBotellones}</h2>
-					<p>${nivelVentas}</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Litros Vendidos</h3>
-                    <h2>${totalLitros}L</h2>
-                </div>
-                <div class="stat-card">
-                    <h3>Efectivo</h3>
-                    <h2>Bs ${efectivo.toFixed(2)}</h2>
-                </div>
-                <div class="stat-card">
-                    <h3>Pago Móvil</h3>
-                    <h2>Bs ${movil.toFixed(2)}</h2>
-                </div>
-                <div class="stat-card">
-                    <h3>Total General</h3>
-                    <h2>Bs ${total.toFixed(2)}</h2>
-                </div>
-            `;
-        }
-
-        function cambiarEstado(index) {
-            estadoApp.ventas[index].estado = estadoApp.ventas[index].estado === 'paid' ? 'pending' : 'paid';
-            guardarEstado();
-            mostrarVentas();
-        }
-
-        function eliminarVenta(index) {
-            if(confirm('¿Seguro que deseas eliminar esta venta?')) {
-                estadoApp.ventas.splice(index, 1);
-                guardarEstado();
-                actualizarInterfaz();
+                        <div class="sale-actions">
+                            <button class="action-btn toggle-status ${venta.estado === 'pagado' ? 'btn-success' : 'btn-warning'}" data-id="${venta.id}">
+                                ${venta.estado === 'pagado' ? '✅ Pagado' : '⏳ Pendiente'}
+                            </button>
+                            <button class="action-btn btn-danger delete-sale" data-id="${venta.id}">🗑️ Eliminar</button>
+                        </div>
+                    `;
+                    
+                    listaVentas.appendChild(ventaElement);
+                });
+                
+                // Agregar event listeners para cambiar estado
+                document.querySelectorAll('.toggle-status').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        toggleEstadoVenta(id);
+                    });
+                });
+                
+                // Agregar event listeners para eliminar ventas
+                document.querySelectorAll('.delete-sale').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = parseInt(this.getAttribute('data-id'));
+                        eliminarVenta(id);
+                    });
+                });
             }
-        }
-
-        function generarCorteDia() {
-            estadoApp.observacion = document.getElementById('observacion').value;
-            guardarEstado();
             
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const ventasFiltradas = getVentasFiltradas();
-            const fechaReporte = fechaFiltro || new Date().toISOString().split('T')[0];
-            
-            // Encabezado
-            doc.setFontSize(18);
-            doc.text(`Cierre del Día - ${fechaReporte}`, 15, 15);
-            
-            // Observación
-            doc.setFontSize(12);
-            doc.text(`Observación: ${estadoApp.observacion}`, 15, 25);
-            
-            // Tabla de ventas
-            const datosVentas = ventasFiltradas.map(venta => [
-                venta.fecha,
-                venta.nombre,
-                venta.cantidad,
-                `${venta.litros}L`,
-                `Bs ${venta.monto.toFixed(2)}`,
-                venta.pago.toUpperCase(),
-                venta.estado === 'paid' ? 'Pagado' : 'Pendiente' 
-            ]);
-            
-            doc.autoTable({
-                startY: 35,
-                head: [['Fecha', 'Cliente', 'Cantidad', 'Litros', 'Monto', 'Método', 'Estado']],
-                body: datosVentas,
-                theme: 'grid',
-                styles: { fontSize: 10 }
-            });
-            
-            // Totales
-            const totalBotellones = ventasFiltradas.reduce((a, b) => a + b.cantidad, 0);
-            const totalLitros = ventasFiltradas.reduce((a, b) => a + (b.cantidad * b.litros), 0);
-            const efectivo = ventasFiltradas.filter(v => v.pago === 'efectivo').reduce((a, b) => a + b.monto, 0);
-            const movil = ventasFiltradas.filter(v => v.pago === 'movil').reduce((a, b) => a + b.monto, 0);
-            const total = efectivo + movil;
-            
-            const finalY = doc.lastAutoTable.finalY + 10;
-            doc.autoTable({
-                startY: 300,
-                head: [['Concepto', 'Valor']],
-                body: [
-                    ['Total Botellones', totalBotellones],
-                    ['Total Litros', `${totalLitros} L`],
-                    ['Efectivo', `Bs ${efectivo.toFixed(2)}`],
-                    ['Pago Móvil', `Bs ${movil.toFixed(2)}`],
-                    ['Total General', `Bs ${total.toFixed(2)}`]
-                ],
-                theme: 'grid',
-                headStyles: { fillColor: [41, 128, 185], textColor: 255 },
-                columnStyles: { fillColor: [245, 245, 245] }
-            });
- 
-
- 
-            doc.save(`Cierre ${fechaReporte}.pdf`);
-        }
-
-        function reiniciarSistema() {
-            if (confirm('¿Estás seguro de reiniciar todos los datos?')) {
-                localStorage.clear();
-                estadoApp = { ventas: [], observacion: '' };
-                actualizarInterfaz();
+            function toggleEstadoVenta(id) {
+                ventas = ventas.map(venta => {
+                    if (venta.id === id) {
+                        venta.estado = venta.estado === 'pagado' ? 'pendiente' : 'pagado';
+                    }
+                    return venta;
+                });
+                
+                guardarVentas();
+                actualizarListaVentas();
+                actualizarEstadisticas();
             }
-        }
-
-        // Event Listeners
-        document.getElementById('filtroFecha').addEventListener('change', function() {
-            fechaFiltro = this.value;
-            actualizarInterfaz();
+            
+            function eliminarVenta(id) {
+                if (confirm('¿Estás seguro de que quieres eliminar esta venta?')) {
+                    ventas = ventas.filter(venta => venta.id !== id);
+                    guardarVentas();
+                    actualizarListaVentas();
+                    actualizarEstadisticas();
+                    actualizarMensajeVentas();
+                }
+            }
+            
+            function actualizarEstadisticas() {
+                const fechaFiltro = filtroEstadisticas.value;
+                
+                // Filtrar ventas por fecha
+                const ventasFiltradas = fechaFiltro ? ventas.filter(venta => venta.fecha === fechaFiltro) : ventas;
+                
+                // Calcular estadísticas
+                const totalBotellones = ventasFiltradas.reduce((sum, venta) => sum + venta.cantidad, 0);
+                const botellonesPendientes = ventasFiltradas
+                    .filter(venta => venta.estado === 'pendiente')
+                    .reduce((sum, venta) => sum + venta.cantidad, 0);
+                const litrosVendidos = ventasFiltradas.reduce((sum, venta) => sum + (venta.cantidad * venta.litros), 0);
+                const totalEfectivo = ventasFiltradas
+                    .filter(venta => venta.metodoPago === 'efectivo')
+                    .reduce((sum, venta) => sum + venta.monto, 0);
+                const totalMovil = ventasFiltradas
+                    .filter(venta => venta.metodoPago === 'movil')
+                    .reduce((sum, venta) => sum + venta.monto, 0);
+                const totalGeneral = totalEfectivo + totalMovil;
+                
+                // Actualizar UI
+                document.getElementById('total-botellones').textContent = totalBotellones;
+                document.getElementById('botellones-pendientes').textContent = botellonesPendientes;
+                document.getElementById('litros-vendidos').textContent = litrosVendidos;
+                document.getElementById('total-efectivo').textContent = totalEfectivo.toFixed(2) + ' Bs';
+                document.getElementById('total-movil').textContent = totalMovil.toFixed(2) + ' Bs';
+                document.getElementById('total-general').textContent = totalGeneral.toFixed(2) + ' Bs';
+                
+                // Actualizar mensaje de ventas
+                actualizarMensajeVentas();
+            }
+            
+            function actualizarMensajeVentas() {
+                const fechaFiltro = filtroEstadisticas.value;
+                const ventasFiltradas = fechaFiltro ? ventas.filter(venta => venta.fecha === fechaFiltro) : ventas;
+                const totalBotellones = ventasFiltradas.reduce((sum, venta) => sum + venta.cantidad, 0);
+                
+                mensajeVentas.className = 'message-container';
+                
+                if (totalBotellones >= 17) {
+                    mensajeVentas.textContent = '¡🚀Día alto en ventas🔥!';
+                    mensajeVentas.classList.add('high-sales');
+                } else if (totalBotellones >= 10) {
+                    mensajeVentas.textContent = '👍Día mediano en ventas';
+                    mensajeVentas.classList.add('medium-sales');
+                } else if (totalBotellones < 5) {
+                    mensajeVentas.textContent = '😭Día bajo en ventas';
+                    mensajeVentas.classList.add('low-sales');
+                } else {
+                    mensajeVentas.textContent = 'Ventas regulares';
+                    mensajeVentas.classList.add('medium-sales');
+                }
+            }
+            
+            function generarPDF() {
+                const fechaFiltro = filtroEstadisticas.value;
+                const observacion = document.getElementById('observacion').value;
+                
+                // Filtrar ventas por fecha
+                const ventasFiltradas = fechaFiltro ? ventas.filter(venta => venta.fecha === fechaFiltro) : ventas;
+                
+                // Calcular estadísticas para el PDF
+                const totalBotellones = ventasFiltradas.reduce((sum, venta) => sum + venta.cantidad, 0);
+                const litrosVendidos = ventasFiltradas.reduce((sum, venta) => sum + (venta.cantidad * venta.litros), 0);
+                const totalEfectivo = ventasFiltradas
+                    .filter(venta => venta.metodoPago === 'efectivo')
+                    .reduce((sum, venta) => sum + venta.monto, 0);
+                const totalMovil = ventasFiltradas
+                    .filter(venta => venta.metodoPago === 'movil')
+                    .reduce((sum, venta) => sum + venta.monto, 0);
+                const totalGeneral = totalEfectivo + totalMovil;
+                
+                // Crear PDF
+                const doc = new jsPDF();
+                
+                // Título
+                doc.setFontSize(20);
+                doc.text('Corte del Día', 105, 15, { align: 'center' });
+                doc.setFontSize(12);
+                doc.text(`Fecha: ${fechaFiltro || 'Todas las fechas'}`, 105, 22, { align: 'center' });
+                
+                // Observación
+                if (observacion) {
+                    doc.setFontSize(11);
+                    const splitObservation = doc.splitTextToSize(`Observación: ${observacion}`, 180);
+                    doc.text(splitObservation, 15, 35);
+                }
+                
+                // Estadísticas
+                doc.autoTable({
+                    startY: observacion ? 50 : 30,
+                    head: [['Estadística', 'Valor']],
+                    body: [
+                        ['Total Botellones Vendidos', totalBotellones],
+                        ['Litros Vendidos', litrosVendidos],
+                        ['Monto en Efectivo', `${totalEfectivo.toFixed(2)} Bs`],
+                        ['Monto en Pago Móvil', `${totalMovil.toFixed(2)} Bs`],
+                        ['Total General', `${totalGeneral.toFixed(2)} Bs`]
+                    ],
+                    theme: 'grid',
+                    headStyles: { fillColor: [52, 152, 219] }
+                });
+                
+                // Detalle de ventas
+                if (ventasFiltradas.length > 0) {
+                    const ventasTable = ventasFiltradas.map(venta => [
+                        venta.fecha,
+                        venta.comprador,
+                        venta.cantidad,
+                        `${venta.monto} Bs`,
+                        venta.metodoPago === 'efectivo' ? 'Efectivo' : 'Pago Móvil',
+                        venta.estado
+                    ]);
+                    
+                    doc.autoTable({
+                        startY: doc.lastAutoTable.finalY + 15,
+                        head: [['Fecha', 'Comprador', 'Cantidad', 'Monto', 'Método Pago', 'Estado']],
+                        body: ventasTable,
+                        theme: 'grid',
+                        headStyles: { fillColor: [46, 204, 113] }
+                    });
+                }
+                
+                // Guardar PDF
+                doc.save(`Corte_${fechaFiltro || 'completo'}.pdf`);
+            }
+            
+            // Inicializar la aplicación
+            actualizarListaVentas();
+            actualizarEstadisticas();
+            actualizarMensajeVentas();
         });
-
-        // Inicialización
-        document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
-        actualizarInterfaz();
     </script>
 </body>
 </html>
