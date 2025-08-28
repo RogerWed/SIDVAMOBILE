@@ -338,7 +338,7 @@
             </div>
             
             <div class="card">
-                <h2>Filtrar Ventas</h2>
+                <h2>Ventas🤑</h2>
                 <div class="form-group">
                     <label for="filtro-fecha">Filtrar por Fecha:</label>
                     <input type="date" id="filtro-fecha">
@@ -350,7 +350,7 @@
             </div>
             
             <div class="card">
-                <h2>Ventas Registradas</h2>
+                <h2>Ventas Registradas🫣</h2>
                 <div id="lista-ventas" class="sales-list">
                     <!-- Las ventas se cargarán aquí dinámicamente -->
                 </div>
@@ -360,7 +360,7 @@
         <!-- Sección de Estadísticas -->
         <div id="estadisticas" class="tab-content">
             <div class="card">
-                <h2>Estadísticas de Ventas</h2>
+                <h2>Estadísticas de Ventas🤑</h2>
                 <div class="form-group">
                     <label for="filtro-estadisticas">Filtrar por Fecha:</label>
                     <input type="date" id="filtro-estadisticas">
@@ -369,15 +369,15 @@
             
             <div class="stats-container">
                 <div class="stat-card">
-                    <div class="stat-title">Total Botellones Vendidos</div>
+                    <div class="stat-title">Total Botellones Vendidos🚰</div>
                     <div class="stat-value" id="total-botellones">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Botellones Pendientes</div>
+                    <div class="stat-title">Botellones Pendientes🫣</div>
                     <div class="stat-value" id="botellones-pendientes">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Litros Vendidos</div>
+                    <div class="stat-title">Litros Vendidos💧</div>
                     <div class="stat-value" id="litros-vendidos">0</div>
                 </div>
                 <div class="stat-card">
@@ -389,7 +389,7 @@
                     <div class="stat-value" id="total-movil">0 Bs</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Total General</div>
+                    <div class="stat-title">Total General💰</div>
                     <div class="stat-value" id="total-general">0 Bs</div>
                 </div>
             </div>
@@ -398,7 +398,7 @@
         <!-- Sección de Acciones -->
         <div id="acciones" class="tab-content">
             <div class="card">
-                <h2>Mensaje del Día</h2>
+                <h2>Mensaje del Día💯</h2>
                 <div id="mensaje-ventas" class="message-container">
                     <!-- Mensaje animado según volumen de ventas -->
                 </div>
@@ -433,6 +433,7 @@
             const navTabs = document.querySelectorAll('.nav-tab');
             const tabContents = document.querySelectorAll('.tab-content');
             const saleForm = document.getElementById('sale-form');
+            const fechaInput = document.getElementById('fecha');
             const filtroFecha = document.getElementById('filtro-fecha');
             const buscarNombre = document.getElementById('buscar-nombre');
             const listaVentas = document.getElementById('lista-ventas');
@@ -472,7 +473,19 @@
             
             // Establecer fecha actual por defecto
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('fecha').value = today;
+            
+            // Cargar fecha de registro desde localStorage si existe
+            const fechaRegistroGuardada = localStorage.getItem('fechaRegistro');
+            if (fechaRegistroGuardada) {
+                fechaInput.value = fechaRegistroGuardada;
+            } else {
+                fechaInput.value = today;
+            }
+            
+            // Guardar fecha de registro cuando cambie
+            fechaInput.addEventListener('change', function() {
+                localStorage.setItem('fechaRegistro', this.value);
+            });
             
             // Cargar fecha seleccionada del filtro desde localStorage si existe
             const fechaFiltroGuardada = localStorage.getItem('fechaFiltro');
@@ -496,7 +509,7 @@
                 
                 const nuevaVenta = {
                     id: Date.now(),
-                    fecha: document.getElementById('fecha').value,
+                    fecha: fechaInput.value,
                     comprador: document.getElementById('comprador').value,
                     metodoPago: document.getElementById('metodo-pago').value,
                     cantidad: parseInt(document.getElementById('cantidad').value),
@@ -508,9 +521,13 @@
                 ventas.push(nuevaVenta);
                 guardarVentas();
                 actualizarListaVentas();
-                saleForm.reset();
-                document.getElementById('fecha').value = today;
-                document.getElementById('litros').value = 20;
+                
+                // Limpiar formulario pero mantener la fecha seleccionada
+                document.getElementById('comprador').value = '';
+                document.getElementById('metodo-pago').value = '';
+                document.getElementById('cantidad').value = '';
+                document.getElementById('monto').value = '';
+                document.getElementById('litros').value = '20';
                 
                 // Mostrar mensaje de éxito
                 alert('Venta registrada exitosamente!');
@@ -538,9 +555,11 @@
             resetDatosBtn.addEventListener('click', function() {
                 if (confirm('¿Estás seguro de que quieres eliminar todos los datos? Esta acción no se puede deshacer.')) {
                     ventas = [];
+                    localStorage.removeItem('fechaRegistro');
                     localStorage.removeItem('fechaFiltro');
                     localStorage.removeItem('fechaEstadisticas');
                     guardarVentas();
+                    fechaInput.value = today;
                     actualizarListaVentas();
                     actualizarEstadisticas();
                     actualizarMensajeVentas();
@@ -675,13 +694,13 @@
                     mensajeVentas.textContent = '¡🚀Día alto en ventas🔥!';
                     mensajeVentas.classList.add('high-sales');
                 } else if (totalBotellones >= 10) {
-                    mensajeVentas.textContent = '👍Día mediano en ventas';
+                    mensajeVentas.textContent = '👍🏽Día mediano en ventas';
                     mensajeVentas.classList.add('medium-sales');
                 } else if (totalBotellones < 5) {
                     mensajeVentas.textContent = '😭Día bajo en ventas';
                     mensajeVentas.classList.add('low-sales');
                 } else {
-                    mensajeVentas.textContent = 'Ventas regulares';
+                    mensajeVentas.textContent = 'Ventas regulares🙌🏽';
                     mensajeVentas.classList.add('medium-sales');
                 }
             }
