@@ -16,6 +16,7 @@
             --dark: #2c3e50;
             --light: #ecf0f1;
             --gray: #95a5a6;
+            --dollar: #27ae60;
         }
         
         * {
@@ -164,6 +165,11 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
+        .stat-card.dollar {
+            background: linear-gradient(135deg, #f5f5f5, #e8f5e9);
+            border: 1px solid #27ae60;
+        }
+        
         .stat-value {
             font-size: 1.8rem;
             font-weight: bold;
@@ -173,6 +179,12 @@
         .stat-title {
             color: var(--gray);
             font-size: 0.9rem;
+        }
+        
+        .tasa-info {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 5px;
         }
         
         .sales-list {
@@ -276,6 +288,20 @@
             padding-left: 35px;
         }
         
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         @media (min-width: 768px) {
             .container {
                 max-width: 750px;
@@ -290,7 +316,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>💧 Sistema de Ventas de Agua</h1>
+            <h1>💧Sistema de Ventas de Agua</h1>
             <p>Gestiona tus ventas de forma eficiente</p>
         </header>
         
@@ -306,7 +332,7 @@
                 <h2>Nueva Venta</h2>
                 <form id="sale-form">
                     <div class="form-group">
-                        <label for="fecha">Fecha:</label>
+                        <label for="fecha">Fecha📆:</label>
                         <input type="date" id="fecha" required>
                     </div>
                     <div class="form-group">
@@ -340,7 +366,7 @@
             <div class="card">
                 <h2>Ventas🤑</h2>
                 <div class="form-group">
-                    <label for="filtro-fecha">Filtrar por Fecha:</label>
+                    <label for="filtro-fecha">Filtrar por Fecha 📆:</label>
                     <input type="date" id="filtro-fecha">
                 </div>
                 <div class="search-box">
@@ -360,10 +386,20 @@
         <!-- Sección de Estadísticas -->
         <div id="estadisticas" class="tab-content">
             <div class="card">
-                <h2>Estadísticas de Ventas🤑</h2>
+                <h2>Estadísticas de Ventas📊</h2>
                 <div class="form-group">
                     <label for="filtro-estadisticas">Filtrar por Fecha:</label>
                     <input type="date" id="filtro-estadisticas">
+                </div>
+                <div class="form-group">
+                    <label for="tasa-dolar">Tasa BCV (Bs/$):</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="number" id="tasa-dolar" step="0.01" min="1" placeholder="Tasa de cambio">
+                        <button type="button" id="actualizar-tasa" class="btn-success" style="width: auto; padding: 10px;">
+                            <span id="texto-boton">🔄 Actualizar</span>
+                            <span id="loading-boton" class="loading" style="display: none;"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
             
@@ -389,8 +425,13 @@
                     <div class="stat-value" id="total-movil">0 Bs</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Total General💰</div>
+                    <div class="stat-title">Total General🪙</div>
                     <div class="stat-value" id="total-general">0 Bs</div>
+                </div>
+                <div class="stat-card dollar">
+                    <div class="stat-title">Total en 💰</div>
+                    <div class="stat-value" id="total-dolares">0.00 $</div>
+                    <div class="tasa-info" id="info-tasa">Tasa: 0.00 Bs/$</div>
                 </div>
             </div>
         </div>
@@ -428,6 +469,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Variables globales
             let ventas = JSON.parse(localStorage.getItem('ventas')) || [];
+            let tasaDolar = parseFloat(localStorage.getItem('tasaDolar')) || 0;
             
             // Elementos del DOM
             const navTabs = document.querySelectorAll('.nav-tab');
@@ -439,8 +481,15 @@
             const listaVentas = document.getElementById('lista-ventas');
             const filtroEstadisticas = document.getElementById('filtro-estadisticas');
             const mensajeVentas = document.getElementById('mensaje-ventas');
+            const observacionTextarea = document.getElementById('observacion');
             const generarPdfBtn = document.getElementById('generar-pdf');
             const resetDatosBtn = document.getElementById('reset-datos');
+            const tasaDolarInput = document.getElementById('tasa-dolar');
+            const actualizarTasaBtn = document.getElementById('actualizar-tasa');
+            const textoBoton = document.getElementById('texto-boton');
+            const loadingBoton = document.getElementById('loading-boton');
+            const totalDolaresElement = document.getElementById('total-dolares');
+            const infoTasaElement = document.getElementById('info-tasa');
             
             // Navegación entre pestañas
             navTabs.forEach(tab => {
@@ -503,6 +552,71 @@
                 filtroEstadisticas.value = today;
             }
             
+            // Cargar observaciones desde localStorage si existen
+            const observacionGuardada = localStorage.getItem('observacion');
+            if (observacionGuardada) {
+                observacionTextarea.value = observacionGuardada;
+            }
+            
+            // Guardar observaciones cuando cambien
+            observacionTextarea.addEventListener('input', function() {
+                localStorage.setItem('observacion', this.value);
+            });
+            
+            // Cargar tasa de dólar desde localStorage si existe
+            if (tasaDolar) {
+                tasaDolarInput.value = tasaDolar;
+                infoTasaElement.textContent = `Tasa: ${tasaDolar.toFixed(2)} Bs/$`;
+            } else {
+                // Si no hay tasa guardada, intentar obtenerla automáticamente
+                obtenerTasaDolar();
+            }
+            
+            // Guardar tasa de dólar cuando cambie manualmente
+            tasaDolarInput.addEventListener('change', function() {
+                tasaDolar = parseFloat(this.value) || 0;
+                localStorage.setItem('tasaDolar', tasaDolar);
+                infoTasaElement.textContent = `Tasa: ${tasaDolar.toFixed(2)} Bs/$`;
+                actualizarEstadisticas();
+            });
+            
+            // Actualizar tasa de dólar
+            actualizarTasaBtn.addEventListener('click', function() {
+                obtenerTasaDolar();
+            });
+            
+            // Función para obtener la tasa del dólar desde una API
+            function obtenerTasaDolar() {
+                textoBoton.style.display = 'none';
+                loadingBoton.style.display = 'inline-block';
+                
+                // Usamos una API pública para obtener la tasa del dólar
+                // Nota: En producción, deberías usar una API confiable y posiblemente con una clave API
+                fetch('https://api.exchangerate-api.com/v4/latest/USD')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Para Venezuela, usamos VES (Bolívar soberano)
+                        // Esta API puede no tener la tasa oficial del BCV, es solo para demostración
+                        const tasaUSD = data.rates.VES || 36.00; // Valor por defecto si no encuentra
+                        
+                        tasaDolar = tasaUSD;
+                        tasaDolarInput.value = tasaUSD.toFixed(2);
+                        localStorage.setItem('tasaDolar', tasaUSD);
+                        infoTasaElement.textContent = `Tasa: ${tasaUSD.toFixed(2)} Bs/$`;
+                        actualizarEstadisticas();
+                        
+                        textoBoton.style.display = 'inline';
+                        loadingBoton.style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('Error al obtener la tasa de dólar:', error);
+                        alert('No se pudo obtener la tasa automáticamente. Por favor, ingrésala manualmente.');
+                        
+                        textoBoton.style.display = 'inline';
+                        loadingBoton.style.display = 'none';
+                    });
+            }
+            
             // Registrar nueva venta
             saleForm.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -558,8 +672,10 @@
                     localStorage.removeItem('fechaRegistro');
                     localStorage.removeItem('fechaFiltro');
                     localStorage.removeItem('fechaEstadisticas');
+                    localStorage.removeItem('observacion');
                     guardarVentas();
                     fechaInput.value = today;
+                    observacionTextarea.value = '';
                     actualizarListaVentas();
                     actualizarEstadisticas();
                     actualizarMensajeVentas();
@@ -671,6 +787,9 @@
                     .reduce((sum, venta) => sum + venta.monto, 0);
                 const totalGeneral = totalEfectivo + totalMovil;
                 
+                // Calcular total en dólares
+                const totalDolares = tasaDolar > 0 ? (totalGeneral / tasaDolar) : 0;
+                
                 // Actualizar UI
                 document.getElementById('total-botellones').textContent = totalBotellones;
                 document.getElementById('botellones-pendientes').textContent = botellonesPendientes;
@@ -678,6 +797,7 @@
                 document.getElementById('total-efectivo').textContent = totalEfectivo.toFixed(2) + ' Bs';
                 document.getElementById('total-movil').textContent = totalMovil.toFixed(2) + ' Bs';
                 document.getElementById('total-general').textContent = totalGeneral.toFixed(2) + ' Bs';
+                totalDolaresElement.textContent = totalDolares.toFixed(2) + ' $';
                 
                 // Actualizar mensaje de ventas
                 actualizarMensajeVentas();
@@ -697,17 +817,17 @@
                     mensajeVentas.textContent = '👍🏽Día mediano en ventas';
                     mensajeVentas.classList.add('medium-sales');
                 } else if (totalBotellones < 5) {
-                    mensajeVentas.textContent = '😭Día bajo en ventas';
+                    mensajeVentas.textContent = '😢Día bajo en ventas';
                     mensajeVentas.classList.add('low-sales');
                 } else {
-                    mensajeVentas.textContent = 'Ventas regulares🙌🏽';
+                    mensajeVentas.textContent = '🙌🏽Ventas regulares';
                     mensajeVentas.classList.add('medium-sales');
                 }
             }
             
             function generarPDF() {
                 const fechaFiltro = filtroEstadisticas.value;
-                const observacion = document.getElementById('observacion').value;
+                const observacion = observacionTextarea.value;
                 
                 // Filtrar ventas por fecha
                 const ventasFiltradas = fechaFiltro ? ventas.filter(venta => venta.fecha === fechaFiltro) : ventas;
@@ -722,6 +842,7 @@
                     .filter(venta => venta.metodoPago === 'movil')
                     .reduce((sum, venta) => sum + venta.monto, 0);
                 const totalGeneral = totalEfectivo + totalMovil;
+                const totalDolares = tasaDolar > 0 ? (totalGeneral / tasaDolar) : 0;
                 
                 // Crear PDF
                 const doc = new jsPDF();
@@ -739,16 +860,21 @@
                     doc.text(splitObservation, 15, 35);
                 }
                 
+                // Tasa de cambio
+                doc.setFontSize(10);
+                doc.text(`Tasa de cambio: ${tasaDolar.toFixed(2)} Bs/$`, 15, observacion ? 50 : 40);
+                
                 // Estadísticas
                 doc.autoTable({
-                    startY: observacion ? 50 : 30,
+                    startY: observacion ? 60 : 50,
                     head: [['Estadística', 'Valor']],
                     body: [
                         ['Total Botellones Vendidos', totalBotellones],
                         ['Litros Vendidos', litrosVendidos],
                         ['Monto en Efectivo', `${totalEfectivo.toFixed(2)} Bs`],
                         ['Monto en Pago Móvil', `${totalMovil.toFixed(2)} Bs`],
-                        ['Total General', `${totalGeneral.toFixed(2)} Bs`]
+                        ['Total General', `${totalGeneral.toFixed(2)} Bs`],
+                        ['Total en Dólares', `$${totalDolares.toFixed(2)}`]
                     ],
                     theme: 'grid',
                     headStyles: { fillColor: [52, 152, 219] }
@@ -775,7 +901,7 @@
                 }
                 
                 // Guardar PDF
-                doc.save(`Cierre ${fechaFiltro || 'semanal'}.pdf`);
+                doc.save(`Cierre ${fechaFiltro || 'Semanal'}.pdf`);
             }
             
             // Inicializar la aplicación
