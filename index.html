@@ -571,7 +571,7 @@
                 <h2 data-i18n="nueva-venta">Nueva Venta</h2>
                 <form id="sale-form">
                     <div class="form-group">
-                        <label for="fecha" data-i18n="fecha">Fecha📆:</label>
+                        <label for="fecha" "fecha">Fecha📆:</label>
                         <input type="date" id="fecha" required>
                     </div>
                     <div class="form-group">
@@ -603,9 +603,9 @@
             </div>
             
             <div class="card">
-                <h2 data-i18n="filtrar-ventas">Ventas🤑</h2>
+                <h2 "filtrar-ventas">Ventas🤑</h2>
                 <div class="form-group">
-                    <label for="filtro-fecha" data-i18n="filtrar-fecha">Filtrar por Fecha📆:</label>
+                    <label for="filtro-fecha" "filtrar-fecha">Filtrar por Fecha📆:</label>
                     <input type="date" id="filtro-fecha">
                 </div>
                 <div class="search-box">
@@ -615,7 +615,7 @@
             </div>
             
             <div class="card">
-                <h2 data-i18n="ventas-registradas">Ventas Registradas🫣</h2>
+                <h2 "ventas-registradas">Ventas Registradas🫣</h2>
                 <div id="lista-ventas" class="sales-list">
                     <!-- Las ventas se cargarán aquí dinámicamente -->
                 </div>
@@ -625,9 +625,9 @@
         <!-- Sección de Estadísticas -->
         <div id="estadisticas" class="tab-content">
             <div class="card">
-                <h2 data-i18n="estadisticas-ventas">Estadísticas de Ventas📊</h2>
+                <h2 "estadisticas-ventas">Estadísticas de Ventas📊</h2>
                 <div class="form-group">
-                    <label for="filtro-estadisticas" data-i18n="filtrar-fecha">Filtrar por Fecha:</label>
+                    <label for="filtro-estadisticas" "filtrar-fecha">Filtrar por Fecha📆:</label>
                     <input type="date" id="filtro-estadisticas">
                 </div>
                 <div class="form-group">
@@ -645,15 +645,15 @@
             <!-- MODIFICACIÓN: Estadísticas en grid de 3 columnas -->
             <div class="stats-container">
                 <div class="stat-card">
-                    <div class="stat-title" data-i18n="total-botellones">Total Botellones Vendidos🚰</div>
+                    <div class="stat-title" "total-botellones">Total Botellones Vendidos🚰</div>
                     <div class="stat-value" id="total-botellones">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title" data-i18n="botellones-pendientes">Botellones Pendientes🫣</div>
+                    <div class="stat-title" "botellones-pendientes">Botellones Pendientes🫣</div>
                     <div class="stat-value" id="botellones-pendientes">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title" data-i18n="litros-vendidos">Litros Vendidos💧</div>
+                    <div class="stat-title" "litros-vendidos">Litros Vendidos💧</div>
                     <div class="stat-value" id="litros-vendidos">0</div>
                 </div>
                 <div class="stat-card">
@@ -665,11 +665,11 @@
                     <div class="stat-value" id="total-movil">0 Bs</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title" data-i18n="total-general">Total General🪙</div>
+                    <div class="stat-title" "total-general">Total General🪙</div>
                     <div class="stat-value" id="total-general">0 Bs</div>
                 </div>
                 <div class="stat-card dollar">
-                    <div class="stat-title" data-i18n="total-dolares">Total en 💰</div>
+                    <div class="stat-title" "total-dolares">Total en 💰</div>
                     <div class="stat-value" id="total-dolares">0.00 $</div>
                     <div class="tasa-info" id="info-tasa">Tasa: 0.00 Bs/$</div>
                 </div>
@@ -688,7 +688,7 @@
             <div class="card">
                 <h2 data-i18n="generar-corte">Generar Corte del Día</h2>
                 <div class="form-group">
-                    <label for="observacion" data-i18n="observacion">Observación:</label>
+                    <label for="observacion" "observacion">Observación🤔:</label>
                     <textarea id="observacion" rows="3" placeholder="Escribe una observación para el corte..."></textarea>
                 </div>
                 <button id="generar-pdf" class="btn-success">📊 <span data-i18n="generar-corte">Generar Corte del Día</span></button>
