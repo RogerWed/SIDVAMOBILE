@@ -17,6 +17,31 @@
             --light: #ecf0f1;
             --gray: #95a5a6;
             --dollar: #27ae60;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: white;
+            --header-bg: linear-gradient(135deg, #3498db, #2ecc71);
+            --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode {
+            --text-color: #ecf0f1;
+            --bg-color: #1a1a2e;
+            --card-bg: #2c3e50;
+            --header-bg: linear-gradient(135deg, #2c3e50, #34495e);
+            --shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .high-contrast {
+            --text-color: #ffffff;
+            --bg-color: #000000;
+            --card-bg: #111111;
+            --header-bg: linear-gradient(135deg, #000000, #333333);
+            --primary: #ffcc00;
+            --secondary: #00ccff;
+            --danger: #ff3300;
+            --warning: #ff9900;
+            --shadow: 0 2px 5px rgba(255, 255, 255, 0.2);
         }
         
         * {
@@ -24,60 +49,73 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
         }
         
         body {
-            background-color: #f5f7fa;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
         .container {
+            width: 100%;
             max-width: 100%;
             padding: 15px;
             margin: 0 auto;
+            flex: 1;
         }
         
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--header-bg);
             color: white;
             padding: 15px 0;
             text-align: center;
             border-radius: 0 0 15px 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
             margin-bottom: 20px;
         }
         
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+        h1, h2, h3 {
+            color: var(--text-color);
         }
         
         .nav-tabs {
             display: flex;
             justify-content: space-around;
-            background: white;
+            background: var(--card-bg);
             border-radius: 50px;
             padding: 5px;
             margin: 15px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         .nav-tab {
-            padding: 10px 15px;
+            padding: 10px 12px;
             border-radius: 50px;
             text-align: center;
             flex: 1;
-            margin: 0 5px;
+            margin: 0 3px;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 500;
+            color: var(--text-color);
+            min-width: 60px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .nav-tab.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow);
         }
         
         .tab-content {
@@ -95,11 +133,11 @@
         }
         
         .card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
         }
         
         .form-group {
@@ -110,7 +148,7 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
-            color: var(--dark);
+            color: var(--text-color);
         }
         
         input, select, textarea {
@@ -119,6 +157,8 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
         }
         
         button {
@@ -151,40 +191,48 @@
             background: var(--warning);
         }
         
+        /* MODIFICACIÓN: Estadísticas con 3 columnas siempre */
         .stats-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
         }
         
         .stat-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 10px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .stat-card.dollar {
-            background: linear-gradient(135deg, #f5f5f5, #e8f5e9);
-            border: 1px solid #27ae60;
+            background: linear-gradient(135deg, var(--card-bg), #e8f5e9);
+            border: 1px solid var(--secondary);
         }
         
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            margin: 10px 0;
+            margin: 8px 0;
+            color: var(--text-color);
         }
         
         .stat-title {
             color: var(--gray);
-            font-size: 0.9rem;
+            font-size: 0.7rem;
+            font-weight: 500;
         }
         
         .tasa-info {
-            font-size: 0.8rem;
-            color: #7f8c8d;
-            margin-top: 5px;
+            font-size: 0.6rem;
+            color: var(--gray);
+            margin-top: 3px;
         }
         
         .sales-list {
@@ -193,35 +241,42 @@
         }
         
         .sale-item {
-            background: white;
+            background: var(--card-bg);
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
+            flex-wrap: wrap;
         }
         
         .sale-info {
             flex: 1;
+            min-width: 200px;
         }
         
         .sale-actions {
             display: flex;
             gap: 5px;
+            margin-top: 10px;
+            width: 100%;
+            justify-content: flex-end;
         }
         
         .action-btn {
             padding: 8px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             border: none;
             display: flex;
             align-items: center;
             justify-content: center;
             min-width: 36px;
+            background: var(--primary);
+            color: white;
         }
         
         .status-badge {
@@ -251,9 +306,8 @@
         }
         
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            from { transform: scale(0.95); }
+            to { transform: scale(1); }
         }
         
         .low-sales {
@@ -301,46 +355,231 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
-        @media (min-width: 768px) {
-            .container {
-                max-width: 750px;
+
+        /* Estilos para switches */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .switch-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .option-title {
+            font-weight: 500;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .option-description {
+            font-size: 0.7rem;
+            color: var(--gray);
+            margin-top: 3px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.9rem;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .info-value {
+            color: var(--gray);
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 150px;
+            margin: 15px 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 40px;
+        }
+
+        .chart-bar {
+            width: 30px;
+            background-color: var(--primary);
+            border-radius: 4px 4px 0 0;
+            transition: height 1s ease-in-out;
+        }
+
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            width: 30px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-color);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            color: var(--gray);
+            font-size: 0.8rem;
+            border-top: 1px solid #ddd;
+        }
+
+        .language-selector {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Ajustes para pantallas muy pequeñas */
+        @media (max-width: 480px) {
+            .nav-tab {
+                padding: 8px 6px;
+                font-size: 12px;
+                min-width: 50px;
+            }
+            
+            .stat-value {
+                font-size: 1rem;
+            }
+            
+            .stat-title {
+                font-size: 0.6rem;
             }
             
             .stats-container {
-                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
             }
+            
+            .stat-card {
+                padding: 8px 5px;
+                min-height: 100px;
+            }
+            
+            .sale-info {
+                min-width: 100%;
+            }
+            
+            .sale-actions {
+                justify-content: center;
+            }
+            
+            .option-title {
+                font-size: 0.8rem;
+            }
+            
+            .option-description {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-card.dollar {
+                grid-column: span 2;
+            }
+        }
+
+        .no-animation * {
+            animation: none !important;
+            transition: none !important;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>💧Sistema de Ventas de Agua</h1>
-            <p>Gestiona tus ventas de forma eficiente</p>
+            <h1 data-i18n="app-title">💧Sistema de Ventas de Agua</h1>
+            <p data-i18n="app-subtitle">Gestiona tus ventas de forma eficiente</p>
         </header>
         
         <div class="nav-tabs">
-            <div class="nav-tab active" data-tab="registro">Registro</div>
-            <div class="nav-tab" data-tab="estadisticas">Estadísticas</div>
-            <div class="nav-tab" data-tab="acciones">Acciones</div>
+            <div class="nav-tab active" data-tab="registro" data-i18n="registro">Registro</div>
+            <div class="nav-tab" data-tab="estadisticas" data-i18n="estadisticas">Estadísticas</div>
+            <div class="nav-tab" data-tab="acciones" data-i18n="acciones">Acciones</div>
+            <div class="nav-tab" data-tab="ajustes">⚙️</div>
         </div>
         
         <!-- Sección de Registro -->
         <div id="registro" class="tab-content active">
             <div class="card">
-                <h2>Nueva Venta</h2>
+                <h2 data-i18n="nueva-venta">Nueva Venta</h2>
                 <form id="sale-form">
                     <div class="form-group">
-                        <label for="fecha">Fecha📆:</label>
+                        <label for="fecha" data-i18n="fecha">Fecha📆:</label>
                         <input type="date" id="fecha" required>
                     </div>
                     <div class="form-group">
-                        <label for="comprador">Nombre del Comprador:</label>
+                        <label for="comprador" data-i18n="nombre-comprador">Nombre del Comprador:</label>
                         <input type="text" id="comprador" placeholder="Ingrese el nombre" required>
                     </div>
                     <div class="form-group">
-                        <label for="metodo-pago">Método de Pago:</label>
+                        <label for="metodo-pago" data-i18n="metodo-pago">Método de Pago:</label>
                         <select id="metodo-pago" required>
                             <option value="">Seleccione...</option>
                             <option value="efectivo">Efectivo 💵</option>
@@ -348,25 +587,25 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="cantidad">Cantidad de Botellones:</label>
+                        <label for="cantidad" data-i18n="cantidad-botellones">Cantidad de Botellones:</label>
                         <input type="number" id="cantidad" min="1" placeholder="Ej: 5" required>
                     </div>
                     <div class="form-group">
-                        <label for="litros">Litros por Botellón:</label>
+                        <label for="litros" data-i18n="litros-botellon">Litros por Botellón:</label>
                         <input type="number" id="litros" min="1" value="20" required>
                     </div>
                     <div class="form-group">
-                        <label for="monto">Monto en Bs:</label>
+                        <label for="monto" data-i18n="monto-bs">Monto en Bs:</label>
                         <input type="number" id="monto" min="0" step="0.01" placeholder="Ej: 25.50" required>
                     </div>
-                    <button type="submit">Registrar Venta</button>
+                    <button type="submit" data-i18n="registrar-venta">Registrar Venta</button>
                 </form>
             </div>
             
             <div class="card">
-                <h2>Ventas🤑</h2>
+                <h2 data-i18n="filtrar-ventas">Ventas🤑</h2>
                 <div class="form-group">
-                    <label for="filtro-fecha">Filtrar por Fecha 📆:</label>
+                    <label for="filtro-fecha" data-i18n="filtrar-fecha">Filtrar por Fecha📆:</label>
                     <input type="date" id="filtro-fecha">
                 </div>
                 <div class="search-box">
@@ -376,7 +615,7 @@
             </div>
             
             <div class="card">
-                <h2>Ventas Registradas🫣</h2>
+                <h2 data-i18n="ventas-registradas">Ventas Registradas🫣</h2>
                 <div id="lista-ventas" class="sales-list">
                     <!-- Las ventas se cargarán aquí dinámicamente -->
                 </div>
@@ -386,34 +625,35 @@
         <!-- Sección de Estadísticas -->
         <div id="estadisticas" class="tab-content">
             <div class="card">
-                <h2>Estadísticas de Ventas📊</h2>
+                <h2 data-i18n="estadisticas-ventas">Estadísticas de Ventas📊</h2>
                 <div class="form-group">
-                    <label for="filtro-estadisticas">Filtrar por Fecha:</label>
+                    <label for="filtro-estadisticas" data-i18n="filtrar-fecha">Filtrar por Fecha:</label>
                     <input type="date" id="filtro-estadisticas">
                 </div>
                 <div class="form-group">
-                    <label for="tasa-dolar">Tasa BCV (Bs/$):</label>
+                    <label for="tasa-dolar" data-i18n="tasa-bcv">Tasa BCV (Bs/$):</label>
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <input type="number" id="tasa-dolar" step="0.01" min="1" placeholder="Tasa de cambio">
                         <button type="button" id="actualizar-tasa" class="btn-success" style="width: auto; padding: 10px;">
-                            <span id="texto-boton">🔄 Actualizar</span>
+                            <span id="texto-boton" data-i18n="actualizar">🔄 Actualizar</span>
                             <span id="loading-boton" class="loading" style="display: none;"></span>
                         </button>
                     </div>
                 </div>
             </div>
             
+            <!-- MODIFICACIÓN: Estadísticas en grid de 3 columnas -->
             <div class="stats-container">
                 <div class="stat-card">
-                    <div class="stat-title">Total Botellones Vendidos🚰</div>
+                    <div class="stat-title" data-i18n="total-botellones">Total Botellones Vendidos🚰</div>
                     <div class="stat-value" id="total-botellones">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Botellones Pendientes🫣</div>
+                    <div class="stat-title" data-i18n="botellones-pendientes">Botellones Pendientes🫣</div>
                     <div class="stat-value" id="botellones-pendientes">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Litros Vendidos💧</div>
+                    <div class="stat-title" data-i18n="litros-vendidos">Litros Vendidos💧</div>
                     <div class="stat-value" id="litros-vendidos">0</div>
                 </div>
                 <div class="stat-card">
@@ -425,11 +665,11 @@
                     <div class="stat-value" id="total-movil">0 Bs</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">Total General🪙</div>
+                    <div class="stat-title" data-i18n="total-general">Total General🪙</div>
                     <div class="stat-value" id="total-general">0 Bs</div>
                 </div>
                 <div class="stat-card dollar">
-                    <div class="stat-title">Total en 💰</div>
+                    <div class="stat-title" data-i18n="total-dolares">Total en 💰</div>
                     <div class="stat-value" id="total-dolares">0.00 $</div>
                     <div class="tasa-info" id="info-tasa">Tasa: 0.00 Bs/$</div>
                 </div>
@@ -446,18 +686,121 @@
             </div>
             
             <div class="card">
-                <h2>Generar Corte del Día</h2>
+                <h2 data-i18n="generar-corte">Generar Corte del Día</h2>
                 <div class="form-group">
-                    <label for="observacion">Observación:</label>
+                    <label for="observacion" data-i18n="observacion">Observación:</label>
                     <textarea id="observacion" rows="3" placeholder="Escribe una observación para el corte..."></textarea>
                 </div>
-                <button id="generar-pdf" class="btn-success">📊 Generar Corte del Día</button>
+                <button id="generar-pdf" class="btn-success">📊 <span data-i18n="generar-corte">Generar Corte del Día</span></button>
             </div>
             
             <div class="card">
-                <h2>Gestión de Datos</h2>
-                <p>¿Necesitas reiniciar todos los datos? Esta acción no se puede deshacer.</p>
-                <button id="reset-datos" class="btn-danger">🔄 Resetear Todos los Datos</button>
+                <h2 data-i18n="gestion-datos">Gestión de Datos</h2>
+                <p data-i18n="reset-advertencia">¿Necesitas reiniciar todos los datos? Esta acción no se puede deshacer.</p>
+                <button id="reset-datos" class="btn-danger">🔄 <span data-i18n="reset-datos">Resetear Todos los Datos</span></button>
+            </div>
+        </div>
+        
+        <!-- Sección de Ajustes -->
+        <div id="ajustes" class="tab-content">
+            <div class="card">
+                <h2 data-i18n="modo-oscuro">Modo Oscuro</h2>
+                <div class="switch-container">
+                    <div>
+                        <div class="option-title" data-i18n="activar-modo-oscuro">Activar Modo Oscuro</div>
+                        <div class="option-description" data-i18n="desc-modo-oscuro">Cambia la apariencia de la aplicación a un tema oscuro</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="modo-oscuro">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 data-i18n="informacion-app">Información de la Aplicación</h2>
+                <div class="info-item">
+                    <span class="info-label" data-i18n="version-interfaz">Versión Interfaz:</span>
+                    <span class="info-value">7.5.8</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-i18n="version-webapp">Versión WebApp:</span>
+                    <span class="info-value">8.7.9</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-i18n="actualizacion-seguridad">Actualización de Seguridad:</span>
+                    <span class="info-value">2025-09-09</span>
+              <div class="info-item">
+                    <span class="info-label" data-i18n="ultima-actualizacin">Ultima Actualizacion:</span>
+                    <span class="info-value">2025-09-09</span>
+                </div>      
+              
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 data-i18n="accesibilidad">Accesibilidad</h2>
+                <div class="switch-container">
+                    <div>
+                        <div class="option-title" data-i18n="alto-contraste">Alto Contraste</div>
+                        <div class="option-description" data-i18n="desc-alto-contraste">Aumenta el contraste de colores para mejor visibilidad</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="alto-contraste">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="switch-container">
+                    <div>
+                        <div class="option-title" data-i18n="animaciones">Animaciones</div>
+                        <div class="option-description" data-i18n="desc-animaciones">Activa o desactiva las animaciones en la aplicación</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="animaciones" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 data-i18n="idioma">Idioma</h2>
+                <select class="language-selector" id="selector-idioma">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            
+            <div class="card">
+                <h2 data-i18n="uso-internet">Uso de Internet</h2>
+                <p data-i18n="datos-webapp">Datos utilizados por la WebApp:</p>
+                
+                <div class="chart-container" id="grafico-internet">
+                    <div style="position: relative;">
+                        <div class="chart-bar" id="barra-enviados" style="height: 0px;"></div>
+                        <div class="chart-label" data-i18n="enviados">Enviados</div>
+                    </div>
+                    <div style="position: relative;">
+                        <div class="chart-bar" id="barra-recibidos" style="height: 0px;"></div>
+                        <div class="chart-label" data-i18n="recibidos">Recibidos</div>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <span class="info-label" data-i18n="total-enviado">Total enviado:</span>
+                    <span class="info-value" id="total-enviado">0 KB</span>
+                </div>
+                
+                <div class="info-item">
+                    <span class="info-label" data-i18n="total-recibido">Total recibido:</span>
+                    <span class="info-value" id="total-recibido">0 KB</span>
+                </div>
+                
+                <button id="reiniciar-contadores" class="btn-warning">🔄 <span data-i18n="reiniciar-contadores">Reiniciar Contadores</span></button>
+            </div>
+            
+            <div class="footer">
+                <p>©2025 Todos los derechos reservados, Dev. RogerWeb</p>
             </div>
         </div>
     </div>
@@ -466,10 +809,120 @@
         // Esperar a que se carguen las librerías de jsPDF
         window.jsPDF = window.jspdf.jsPDF;
         
+        // Objeto de traducciones
+        const translations = {
+            es: {
+                "app-title": "💧 Sistema de Ventas de Agua",
+                "app-subtitle": "Gestiona tus ventas de forma eficiente",
+                "registro": "Registro",
+                "estadisticas": "Estadísticas",
+                "acciones": "Acciones",
+                "nueva-venta": "Nueva Venta",
+                "fecha": "Fecha:",
+                "nombre-comprador": "Nombre del Comprador:",
+                "metodo-pago": "Método de Pago:",
+                "cantidad-botellones": "Cantidad de Botellones:",
+                "litros-botellon": "Litros por Botellón:",
+                "monto-bs": "Monto en Bs:",
+                "registrar-venta": "Registrar Venta",
+                "filtrar-ventas": "Filtrar Ventas",
+                "filtrar-fecha": "Filtrar por Fecha:",
+                "ventas-registradas": "Ventas Registradas",
+                "estadisticas-ventas": "Estadísticas de Ventas",
+                "tasa-bcv": "Tasa BCV (Bs/$):",
+                "actualizar": "🔄 Actualizar",
+                "total-botellones": "Total Botellones Vendidos",
+                "botellones-pendientes": "Botellones Pendientes",
+                "litros-vendidos": "Litros Vendidos",
+                "total-general": "Total General",
+                "total-dolares": "Total en $",
+                "mensaje-dia": "Mensaje del Día",
+                "generar-corte": "Generar Corte del Día",
+                "observacion": "Observación:",
+                "gestion-datos": "Gestión de Datos",
+                "reset-advertencia": "¿Necesitas reiniciar todos los datos? Esta acción no se puede deshacer.",
+                "reset-datos": "Resetear Todos los Datos",
+                "modo-oscuro": "Modo Oscuro",
+                "activar-modo-oscuro": "Activar Modo Oscuro",
+                "desc-modo-oscuro": "Cambia la apariencia de la aplicación a un tema oscuro",
+                "informacion-app": "Información de la Aplicación",
+                "version-interfaz": "Versión Interfaz:",
+                "version-webapp": "Versión WebApp:",
+                "actualizacion-seguridad": "Actualización de Seguridad:",
+                "accesibilidad": "Accesibilidad",
+                "alto-contraste": "Alto Contraste",
+                "desc-alto-contraste": "Aumenta el contraste de colores para mejor visibilidad",
+                "animaciones": "Animaciones",
+                "desc-animaciones": "Activa o desactiva las animaciones en la aplicación",
+                "idioma": "Idioma",
+                "uso-internet": "Uso de Internet",
+                "datos-webapp": "Datos utilizados por la WebApp:",
+                "enviados": "Enviados",
+                "recibidos": "Recibidos",
+                "total-enviado": "Total enviado:",
+                "total-recibido": "Total recibido:",
+                "reiniciar-contadores": "Reiniciar Contadores"
+            },
+            en: {
+                "app-title": "💧 Water Sales System",
+                "app-subtitle": "Manage your sales efficiently",
+                "registro": "Register",
+                "estadisticas": "Statistics",
+                "acciones": "Actions",
+                "nueva-venta": "New Sale",
+                "fecha": "Date:",
+                "nombre-comprador": "Buyer Name:",
+                "metodo-pago": "Payment Method:",
+                "cantidad-botellones": "Number of Bottles:",
+                "litros-botellon": "Liters per Bottle:",
+                "monto-bs": "Amount in Bs:",
+                "registrar-venta": "Register Sale",
+                "filtrar-ventas": "Filter Sales",
+                "filtrar-fecha": "Filter by Date:",
+                "ventas-registradas": "Registered Sales",
+                "estadisticas-ventas": "Sales Statistics",
+                "tasa-bcv": "BCV Rate (Bs/$):",
+                "actualizar": "🔄 Update",
+                "total-botellones": "Total Bottles Sold",
+                "botellones-pendientes": "Pending Bottles",
+                "litros-vendidos": "Liters Sold",
+                "total-general": "Total General",
+                "total-dolares": "Total in $",
+                "mensaje-dia": "Message of the Day",
+                "generar-corte": "Generate Daily Report",
+                "observacion": "Observation:",
+                "gestion-datos": "Data Management",
+                "reset-advertencia": "Do you need to reset all data? This action cannot be undone.",
+                "reset-datos": "Reset All Data",
+                "modo-oscuro": "Dark Mode",
+                "activar-modo-oscuro": "Enable Dark Mode",
+                "desc-modo-oscuro": "Changes the app appearance to a dark theme",
+                "informacion-app": "Application Information",
+                "version-interfaz": "Interface Version:",
+                "version-webapp": "WebApp Version:",
+                "actualizacion-seguridad": "Security Update:",
+                "accesibilidad": "Accessibility",
+                "alto-contraste": "High Contrast",
+                "desc-alto-contraste": "Increases color contrast for better visibility",
+                "animaciones": "Animations",
+                "desc-animaciones": "Enable or disable animations in the application",
+                "idioma": "Language",
+                "uso-internet": "Internet Usage",
+                "datos-webapp": "Data used by the WebApp:",
+                "enviados": "Sent",
+                "recibidos": "Received",
+                "total-enviado": "Total sent:",
+                "total-recibido": "Total received:",
+                "reiniciar-contadores": "Reset Counters"
+            }
+        };
+        
         document.addEventListener('DOMContentLoaded', function() {
             // Variables globales
             let ventas = JSON.parse(localStorage.getItem('ventas')) || [];
             let tasaDolar = parseFloat(localStorage.getItem('tasaDolar')) || 0;
+            let datosEnviados = parseInt(localStorage.getItem('datosEnviados')) || 0;
+            let datosRecibidos = parseInt(localStorage.getItem('datosRecibidos')) || 0;
             
             // Elementos del DOM
             const navTabs = document.querySelectorAll('.nav-tab');
@@ -491,6 +944,21 @@
             const totalDolaresElement = document.getElementById('total-dolares');
             const infoTasaElement = document.getElementById('info-tasa');
             
+            // Elementos de ajustes
+            const modoOscuroSwitch = document.getElementById('modo-oscuro');
+            const altoContrasteSwitch = document.getElementById('alto-contraste');
+            const animacionesSwitch = document.getElementById('animaciones');
+            const selectorIdioma = document.getElementById('selector-idioma');
+            const reiniciarContadoresBtn = document.getElementById('reiniciar-contadores');
+            
+            // Cargar configuraciones guardadas
+            cargarConfiguraciones();
+            
+            // Simular uso de datos (esto es solo una simulación)
+            datosRecibidos += 125; // Simular datos recibidos al cargar la página
+            guardarDatosInternet();
+            actualizarGraficoInternet();
+            
             // Navegación entre pestañas
             navTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -505,18 +973,23 @@
                         content.classList.remove('active');
                         if (content.id === tabId) {
                             content.classList.add('active');
+                            
+                            // Si es la pestaña de ajustes, actualizar gráfico
+                            if (tabId === 'ajustes') {
+                                actualizarGraficoInternet();
+                            }
+                            
+                            // Si es la pestaña de estadísticas, actualizarlas
+                            if (tabId === 'estadisticas') {
+                                actualizarEstadisticas();
+                            }
+                            
+                            // Si es la pestaña de acciones, actualizar mensaje
+                            if (tabId === 'acciones') {
+                                actualizarMensajeVentas();
+                            }
                         }
                     });
-                    
-                    // Si es la pestaña de estadísticas, actualizarlas
-                    if (tabId === 'estadisticas') {
-                        actualizarEstadisticas();
-                    }
-                    
-                    // Si es la pestaña de acciones, actualizar mensaje
-                    if (tabId === 'acciones') {
-                        actualizarMensajeVentas();
-                    }
                 });
             });
             
@@ -585,18 +1058,58 @@
                 obtenerTasaDolar();
             });
             
+            // Event listeners para ajustes
+            modoOscuroSwitch.addEventListener('change', function() {
+                guardarConfiguracion('modoOscuro', this.checked);
+                aplicarConfiguraciones();
+            });
+            
+            altoContrasteSwitch.addEventListener('change', function() {
+                guardarConfiguracion('altoContraste', this.checked);
+                aplicarConfiguraciones();
+            });
+            
+            animacionesSwitch.addEventListener('change', function() {
+                guardarConfiguracion('animaciones', this.checked);
+                aplicarConfiguraciones();
+            });
+            
+            selectorIdioma.addEventListener('change', function() {
+                const idioma = this.value;
+                guardarConfiguracion('idioma', idioma);
+                cambiarIdioma(idioma);
+            });
+            
+            reiniciarContadoresBtn.addEventListener('click', function() {
+                if (confirm(selectorIdioma.value === 'es' ? 
+                    '¿Estás seguro de que quieres reiniciar los contadores de internet?' : 
+                    'Are you sure you want to reset internet counters?')) {
+                    datosEnviados = 0;
+                    datosRecibidos = 125; // Valor mínimo por defecto
+                    guardarDatosInternet();
+                    actualizarGraficoInternet();
+                }
+            });
+            
             // Función para obtener la tasa del dólar desde una API
             function obtenerTasaDolar() {
                 textoBoton.style.display = 'none';
                 loadingBoton.style.display = 'inline-block';
                 
+                // Simular envío de datos
+                datosEnviados += 2; // 2KB por la solicitud
+                guardarDatosInternet();
+                
                 // Usamos una API pública para obtener la tasa del dólar
-                // Nota: En producción, deberías usar una API confiable y posiblemente con una clave API
                 fetch('https://api.exchangerate-api.com/v4/latest/USD')
-                    .then(response => response.json())
+                    .then(response => {
+                        // Simular recepción de datos
+                        datosRecibidos += 5; // 5KB por la respuesta
+                        guardarDatosInternet();
+                        return response.json();
+                    })
                     .then(data => {
                         // Para Venezuela, usamos VES (Bolívar soberano)
-                        // Esta API puede no tener la tasa oficial del BCV, es solo para demostración
                         const tasaUSD = data.rates.VES || 36.00; // Valor por defecto si no encuentra
                         
                         tasaDolar = tasaUSD;
@@ -610,11 +1123,98 @@
                     })
                     .catch(error => {
                         console.error('Error al obtener la tasa de dólar:', error);
-                        alert('No se pudo obtener la tasa automáticamente. Por favor, ingrésala manualmente.');
+                        alert(selectorIdioma.value === 'es' ? 
+                            'No se pudo obtener la tasa automáticamente. Por favor, ingrésala manualmente.' : 
+                            'Could not get rate automatically. Please enter it manually.');
                         
                         textoBoton.style.display = 'inline';
                         loadingBoton.style.display = 'none';
                     });
+            }
+            
+            // Funciones de configuración
+            function cargarConfiguraciones() {
+                // Cargar modo oscuro
+                const modoOscuro = localStorage.getItem('modoOscuro') === 'true';
+                modoOscuroSwitch.checked = modoOscuro;
+                
+                // Cargar alto contraste
+                const altoContraste = localStorage.getItem('altoContraste') === 'true';
+                altoContrasteSwitch.checked = altoContraste;
+                
+                // Cargar animaciones
+                const animaciones = localStorage.getItem('animaciones') !== 'false'; // Por defecto activadas
+                animacionesSwitch.checked = animaciones;
+                
+                // Cargar idioma
+                const idioma = localStorage.getItem('idioma') || 'es';
+                selectorIdioma.value = idioma;
+                cambiarIdioma(idioma);
+                
+                // Aplicar configuraciones
+                aplicarConfiguraciones();
+            }
+            
+            function aplicarConfiguraciones() {
+                // Aplicar modo oscuro
+                if (modoOscuroSwitch.checked) {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+                
+                // Aplicar alto contraste
+                if (altoContrasteSwitch.checked) {
+                    document.body.classList.add('high-contrast');
+                } else {
+                    document.body.classList.remove('high-contrast');
+                }
+                
+                // Aplicar animaciones
+                if (animacionesSwitch.checked) {
+                    document.body.classList.remove('no-animation');
+                } else {
+                    document.body.classList.add('no-animation');
+                }
+            }
+            
+            function guardarConfiguracion(clave, valor) {
+                localStorage.setItem(clave, valor);
+            }
+            
+            function guardarDatosInternet() {
+                localStorage.setItem('datosEnviados', datosEnviados);
+                localStorage.setItem('datosRecibidos', datosRecibidos);
+            }
+            
+            function actualizarGraficoInternet() {
+                // Actualizar gráfico
+                const maxHeight = 120; // Altura máxima en píxeles
+                const maxValue = Math.max(datosEnviados, datosRecibidos, 1);
+                
+                document.getElementById('barra-enviados').style.height = (datosEnviados / maxValue * maxHeight) + 'px';
+                document.getElementById('barra-recibidos').style.height = (datosRecibidos / maxValue * maxHeight) + 'px';
+                
+                // Actualizar texto
+                document.getElementById('total-enviado').textContent = datosEnviados + ' KB';
+                document.getElementById('total-recibido').textContent = datosRecibidos + ' KB';
+            }
+            
+            function cambiarIdioma(idioma) {
+                // Actualizar todos los elementos con atributo data-i18n
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (translations[idioma][key]) {
+                        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                            element.placeholder = translations[idioma][key];
+                        } else {
+                            element.textContent = translations[idioma][key];
+                        }
+                    }
+                });
+                
+                // Actualizar mensajes específicos
+                infoTasaElement.textContent = (idioma === 'es' ? 'Tasa: ' : 'Rate: ') + tasaDolar.toFixed(2) + (idioma === 'es' ? ' Bs/$' : ' Bs/$');
             }
             
             // Registrar nueva venta
@@ -636,6 +1236,10 @@
                 guardarVentas();
                 actualizarListaVentas();
                 
+                // Simular envío de datos
+                datosEnviados += 1; // 1KB por registrar venta
+                guardarDatosInternet();
+                
                 // Limpiar formulario pero mantener la fecha seleccionada
                 document.getElementById('comprador').value = '';
                 document.getElementById('metodo-pago').value = '';
@@ -644,7 +1248,9 @@
                 document.getElementById('litros').value = '20';
                 
                 // Mostrar mensaje de éxito
-                alert('Venta registrada exitosamente!');
+                alert(selectorIdioma.value === 'es' ? 
+                    'Venta registrada exitosamente!' : 
+                    'Sale registered successfully!');
             });
             
             // Filtrar ventas por fecha
@@ -663,11 +1269,18 @@
             });
             
             // Generar PDF
-            generarPdfBtn.addEventListener('click', generarPDF);
+            generarPdfBtn.addEventListener('click', function() {
+                // Simular envío de datos
+                datosEnviados += 3; // 3KB por generar PDF
+                guardarDatosInternet();
+                generarPDF();
+            });
             
             // Resetear datos
             resetDatosBtn.addEventListener('click', function() {
-                if (confirm('¿Estás seguro de que quieres eliminar todos los datos? Esta acción no se puede deshacer.')) {
+                if (confirm(selectorIdioma.value === 'es' ? 
+                    '¿Estás seguro de que quieres eliminar todos los datos? Esta acción no se puede deshacer.' : 
+                    'Are you sure you want to delete all data? This action cannot be undone.')) {
                     ventas = [];
                     localStorage.removeItem('fechaRegistro');
                     localStorage.removeItem('fechaFiltro');
@@ -679,7 +1292,9 @@
                     actualizarListaVentas();
                     actualizarEstadisticas();
                     actualizarMensajeVentas();
-                    alert('Todos los datos han sido eliminados.');
+                    alert(selectorIdioma.value === 'es' ? 
+                        'Todos los datos han sido eliminados.' : 
+                        'All data has been deleted.');
                 }
             });
             
@@ -703,7 +1318,9 @@
                 listaVentas.innerHTML = '';
                 
                 if (ventasFiltradas.length === 0) {
-                    listaVentas.innerHTML = '<p>No hay ventas registradas para los filtros seleccionados.</p>';
+                    listaVentas.innerHTML = '<p>' + (selectorIdioma.value === 'es' ? 
+                        'No hay ventas registradas para los filtros seleccionados.' : 
+                        'No registered sales for selected filters.') + '</p>';
                     return;
                 }
                 
@@ -713,14 +1330,18 @@
                     
                     ventaElement.innerHTML = `
                         <div class="sale-info">
-                            <strong>${venta.comprador}</strong> - ${venta.cantidad} botellones
-                            <div>${venta.fecha} - ${venta.metodoPago === 'efectivo' ? '💵 Efectivo' : '📲 Pago Móvil'} - ${venta.monto} Bs</div>
+                            <strong>${venta.comprador}</strong> - ${venta.cantidad} ` + 
+                            (selectorIdioma.value === 'es' ? 'botellones' : 'bottles') + `
+                            <div>${venta.fecha} - ${venta.metodoPago === 'efectivo' ? 
+                            (selectorIdioma.value === 'es' ? '💵 Efectivo' : '💵 Cash') : 
+                            (selectorIdioma.value === 'es' ? '📲 Pago Móvil' : '📲 Mobile Payment')} - ${venta.monto} Bs</div>
                         </div>
                         <div class="sale-actions">
                             <button class="action-btn toggle-status ${venta.estado === 'pagado' ? 'btn-success' : 'btn-warning'}" data-id="${venta.id}">
-                                ${venta.estado === 'pagado' ? '✅ Pagado' : '⏳ Pendiente'}
+                                ${venta.estado === 'pagado' ? '✅ ' + (selectorIdioma.value === 'es' ? 'Pagado' : 'Paid') : 
+                                '⏳ ' + (selectorIdioma.value === 'es' ? 'Pendiente' : 'Pending')}
                             </button>
-                            <button class="action-btn btn-danger delete-sale" data-id="${venta.id}">🗑️ Eliminar</button>
+                            <button class="action-btn btn-danger delete-sale" data-id="${venta.id}">🗑️ ${selectorIdioma.value === 'es' ? 'Eliminar' : 'Delete'}</button>
                         </div>
                     `;
                     
@@ -758,7 +1379,9 @@
             }
             
             function eliminarVenta(id) {
-                if (confirm('¿Estás seguro de que quieres eliminar esta venta?')) {
+                if (confirm(selectorIdioma.value === 'es' ? 
+                    '¿Estás seguro de que quieres eliminar esta venta?' : 
+                    'Are you sure you want to delete this sale?')) {
                     ventas = ventas.filter(venta => venta.id !== id);
                     guardarVentas();
                     actualizarListaVentas();
@@ -810,18 +1433,34 @@
                 
                 mensajeVentas.className = 'message-container';
                 
-                if (totalBotellones >= 17) {
-                    mensajeVentas.textContent = '¡🚀Día alto en ventas🔥!';
-                    mensajeVentas.classList.add('high-sales');
-                } else if (totalBotellones >= 10) {
-                    mensajeVentas.textContent = '👍🏽Día mediano en ventas';
-                    mensajeVentas.classList.add('medium-sales');
-                } else if (totalBotellones < 5) {
-                    mensajeVentas.textContent = '😢Día bajo en ventas';
-                    mensajeVentas.classList.add('low-sales');
+                if (selectorIdioma.value === 'es') {
+                    if (totalBotellones >= 17) {
+                        mensajeVentas.textContent = '¡🚀Día alto en ventas🔥!';
+                        mensajeVentas.classList.add('high-sales');
+                    } else if (totalBotellones >= 10) {
+                        mensajeVentas.textContent = '👍🏽Día mediano en ventas🫣';
+                        mensajeVentas.classList.add('medium-sales');
+                    } else if (totalBotellones < 5) {
+                        mensajeVentas.textContent = '🥱Día bajo en ventas😢';
+                        mensajeVentas.classList.add('low-sales');
+                    } else {
+                        mensajeVentas.textContent = 'Ventas regulares';
+                        mensajeVentas.classList.add('medium-sales');
+                    }
                 } else {
-                    mensajeVentas.textContent = '🙌🏽Ventas regulares';
-                    mensajeVentas.classList.add('medium-sales');
+                    if (totalBotellones >= 17) {
+                        mensajeVentas.textContent = 'High sales day!';
+                        mensajeVentas.classList.add('high-sales');
+                    } else if (totalBotellones >= 10) {
+                        mensajeVentas.textContent = 'Medium sales day';
+                        mensajeVentas.classList.add('medium-sales');
+                    } else if (totalBotellones < 5) {
+                        mensajeVentas.textContent = 'Low sales day';
+                        mensajeVentas.classList.add('low-sales');
+                    } else {
+                        mensajeVentas.textContent = 'Regular sales';
+                        mensajeVentas.classList.add('medium-sales');
+                    }
                 }
             }
             
@@ -849,32 +1488,32 @@
                 
                 // Título
                 doc.setFontSize(20);
-                doc.text('Corte del Día', 105, 15, { align: 'center' });
+                doc.text(selectorIdioma.value === 'es' ? 'Corte del Día' : 'Daily Report', 105, 15, { align: 'center' });
                 doc.setFontSize(12);
-                doc.text(`Fecha: ${fechaFiltro || 'Todas las fechas'}`, 105, 22, { align: 'center' });
+                doc.text(`${selectorIdioma.value === 'es' ? 'Fecha' : 'Date'}: ${fechaFiltro || (selectorIdioma.value === 'es' ? 'Todas las fechas' : 'All dates')}`, 105, 22, { align: 'center' });
                 
                 // Observación
                 if (observacion) {
                     doc.setFontSize(11);
-                    const splitObservation = doc.splitTextToSize(`Observación: ${observacion}`, 180);
+                    const splitObservation = doc.splitTextToSize(`${selectorIdioma.value === 'es' ? 'Observación' : 'Observation'}: ${observacion}`, 180);
                     doc.text(splitObservation, 15, 35);
                 }
                 
                 // Tasa de cambio
                 doc.setFontSize(10);
-                doc.text(`Tasa de cambio: ${tasaDolar.toFixed(2)} Bs/$`, 15, observacion ? 50 : 40);
+                doc.text(`${selectorIdioma.value === 'es' ? 'Tasa de cambio' : 'Exchange rate'}: ${tasaDolar.toFixed(2)} Bs/$`, 15, observacion ? 50 : 40);
                 
                 // Estadísticas
                 doc.autoTable({
                     startY: observacion ? 60 : 50,
-                    head: [['Estadística', 'Valor']],
+                    head: [[selectorIdioma.value === 'es' ? 'Estadística' : 'Statistic', selectorIdioma.value === 'es' ? 'Valor' : 'Value']],
                     body: [
-                        ['Total Botellones Vendidos', totalBotellones],
-                        ['Litros Vendidos', litrosVendidos],
-                        ['Monto en Efectivo', `${totalEfectivo.toFixed(2)} Bs`],
-                        ['Monto en Pago Móvil', `${totalMovil.toFixed(2)} Bs`],
-                        ['Total General', `${totalGeneral.toFixed(2)} Bs`],
-                        ['Total en Dólares', `$${totalDolares.toFixed(2)}`]
+                        [selectorIdioma.value === 'es' ? 'Total Botellones Vendidos' : 'Total Bottles Sold', totalBotellones],
+                        [selectorIdioma.value === 'es' ? 'Litros Vendidos' : 'Liters Sold', litrosVendidos],
+                        [selectorIdioma.value === 'es' ? 'Monto en Efectivo' : 'Cash Amount', `${totalEfectivo.toFixed(2)} Bs`],
+                        [selectorIdioma.value === 'es' ? 'Monto en Pago Móvil' : 'Mobile Payment Amount', `${totalMovil.toFixed(2)} Bs`],
+                        [selectorIdioma.value === 'es' ? 'Total General' : 'Total General', `${totalGeneral.toFixed(2)} Bs`],
+                        [selectorIdioma.value === 'es' ? 'Total en Dólares' : 'Total in Dollars', `$${totalDolares.toFixed(2)}`]
                     ],
                     theme: 'grid',
                     headStyles: { fillColor: [52, 152, 219] }
@@ -887,13 +1526,20 @@
                         venta.comprador,
                         venta.cantidad,
                         `${venta.monto} Bs`,
-                        venta.metodoPago === 'efectivo' ? 'Efectivo' : 'Pago Móvil',
-                        venta.estado
+                        venta.metodoPago === 'efectivo' ? (selectorIdioma.value === 'es' ? 'Efectivo' : 'Cash') : (selectorIdioma.value === 'es' ? 'Pago Móvil' : 'Mobile Payment'),
+                        venta.estado === 'pagado' ? (selectorIdioma.value === 'es' ? 'Pagado' : 'Paid') : (selectorIdioma.value === 'es' ? 'Pendiente' : 'Pending')
                     ]);
                     
                     doc.autoTable({
                         startY: doc.lastAutoTable.finalY + 15,
-                        head: [['Fecha', 'Comprador', 'Cantidad', 'Monto', 'Método Pago', 'Estado']],
+                        head: [
+                            [selectorIdioma.value === 'es' ? 'Fecha' : 'Date', 
+                             selectorIdioma.value === 'es' ? 'Comprador' : 'Buyer', 
+                             selectorIdioma.value === 'es' ? 'Cantidad' : 'Quantity', 
+                             selectorIdioma.value === 'es' ? 'Monto' : 'Amount', 
+                             selectorIdioma.value === 'es' ? 'Método Pago' : 'Payment Method', 
+                             selectorIdioma.value === 'es' ? 'Estado' : 'Status']
+                        ],
                         body: ventasTable,
                         theme: 'grid',
                         headStyles: { fillColor: [46, 204, 113] }
@@ -901,7 +1547,7 @@
                 }
                 
                 // Guardar PDF
-                doc.save(`Cierre ${fechaFiltro || 'Semanal'}.pdf`);
+                doc.save(`${selectorIdioma.value === 'es' ? 'Corte' : 'Report'}_${fechaFiltro || 'completo'}.pdf`);
             }
             
             // Inicializar la aplicación
