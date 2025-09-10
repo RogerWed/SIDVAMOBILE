@@ -191,10 +191,6 @@
             background: var(--warning);
         }
         
-        .btn-edit {
-            background: var(--primary);
-        }
-        
         /* MODIFICACIÓN: Estadísticas con 3 columnas siempre */
         .stats-container {
             display: grid;
@@ -279,7 +275,12 @@
             align-items: center;
             justify-content: center;
             min-width: 36px;
+            background: var(--primary);
             color: white;
+        }
+        
+        .btn-edit {
+            background: var(--warning);
         }
         
         .status-badge {
@@ -309,7 +310,7 @@
         }
         
         @keyframes pulse {
-           0% { transform: scale(1); }
+            0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
@@ -572,7 +573,7 @@
         <!-- Sección de Registro -->
         <div id="registro" class="tab-content active">
             <div class="card">
-                <h2 data-i18n="nueva-venta">Nueva Venta</h2>
+                <h2 "nueva-venta">Nueva Venta✍🏽</h2>
                 <form id="sale-form">
                     <div class="form-group">
                         <label for="fecha" "fecha">Fecha📆:</label>
@@ -607,9 +608,9 @@
             </div>
             
             <div class="card">
-                <h2 "filtrar-ventas">Ventas🤑</h2>
+                <h2 "filtrar-ventas">Ventas🫰🏽</h2>
                 <div class="form-group">
-                    <label for="filtro-fecha" "filtrar-fecha">Busqueda por Fecha📆:</label>
+                    <label for="filtro-fecha" "filtrar-fecha">Búsqueda por Fecha📆:</label>
                     <input type="date" id="filtro-fecha">
                 </div>
                 <div class="search-box">
@@ -738,7 +739,7 @@
                 
                 <div class="info-item">
                     <span class="info-label" data-i18n="ultima-actualizacin">Ultima Actualizacion:</span>
-                    <span class="info-value">2025-09-10</span>
+                    <span class="info-value">2025-09-11</span>
                 </div>
                 
             </div>
@@ -928,7 +929,6 @@
             let tasaDolar = parseFloat(localStorage.getItem('tasaDolar')) || 0;
             let datosEnviados = parseInt(localStorage.getItem('datosEnviados')) || 0;
             let datosRecibidos = parseInt(localStorage.getItem('datosRecibidos')) || 0;
-            let ventaEditando = null;
             
             // Elementos del DOM
             const navTabs = document.querySelectorAll('.nav-tab');
@@ -1227,52 +1227,36 @@
             saleForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                if (ventaEditando) {
-                    // Actualizar venta existente
-                    const ventaIndex = ventas.findIndex(v => v.id === ventaEditando);
-                    if (ventaIndex !== -1) {
-                        ventas[ventaIndex] = {
-                            id: ventaEditando,
-                            fecha: document.getElementById('fecha').value,
-                            comprador: document.getElementById('comprador').value,
-                            metodoPago: document.getElementById('metodo-pago').value,
-                            cantidad: parseInt(document.getElementById('cantidad').value),
-                            litros: parseInt(document.getElementById('litros').value),
-                            monto: parseFloat(document.getElementById('monto').value),
-                            estado: ventas[ventaIndex].estado // Mantener el estado actual
-                        };
-                        guardarVentas();
-                        actualizarListaVentas();
-                        resetForm();
-                        alert(selectorIdioma.value === 'es' ? 
-                            'Venta actualizada exitosamente!' : 
-                            'Sale updated successfully!');
-                    }
-                    ventaEditando = null;
-                } else {
-                    // Crear nueva venta
-                    const nuevaVenta = {
-                        id: Date.now(),
-                        fecha: document.getElementById('fecha').value,
-                        comprador: document.getElementById('comprador').value,
-                        metodoPago: document.getElementById('metodo-pago').value,
-                        cantidad: parseInt(document.getElementById('cantidad').value),
-                        litros: parseInt(document.getElementById('litros').value),
-                        monto: parseFloat(document.getElementById('monto').value),
-                        estado: 'pendiente'
-                    };
-                    ventas.push(nuevaVenta);
-                    guardarVentas();
-                    actualizarListaVentas();
-                    resetForm();
-                    alert(selectorIdioma.value === 'es' ? 
-                        'Venta registrada exitosamente!' : 
-                        'Sale registered successfully!');
-                }
+                const nuevaVenta = {
+                    id: Date.now(),
+                    fecha: fechaInput.value,
+                    comprador: document.getElementById('comprador').value,
+                    metodoPago: document.getElementById('metodo-pago').value,
+                    cantidad: parseInt(document.getElementById('cantidad').value),
+                    litros: parseInt(document.getElementById('litros').value),
+                    monto: parseFloat(document.getElementById('monto').value),
+                    estado: 'pendiente' // Estado por defecto
+                };
+                
+                ventas.push(nuevaVenta);
+                guardarVentas();
+                actualizarListaVentas();
                 
                 // Simular envío de datos
                 datosEnviados += 1; // 1KB por registrar venta
                 guardarDatosInternet();
+                
+                // Limpiar formulario pero mantener la fecha seleccionada
+                document.getElementById('comprador').value = '';
+                document.getElementById('metodo-pago').value = '';
+                document.getElementById('cantidad').value = '';
+                document.getElementById('monto').value = '';
+                // Mantener la fecha y litros como están
+                
+                // Mostrar mensaje de éxito
+                alert(selectorIdioma.value === 'es' ? 
+                    'Venta registrada exitosamente!' : 
+                    'Sale registered successfully!');
             });
             
             // Filtrar ventas por fecha
@@ -1325,14 +1309,6 @@
                 localStorage.setItem('ventas', JSON.stringify(ventas));
             }
             
-            function resetForm() {
-                saleForm.reset();
-                document.getElementById('litros').value = 20;
-                const submitButton = saleForm.querySelector('button[type="submit"]');
-                submitButton.textContent = selectorIdioma.value === 'es' ? 'Registrar Venta' : 'Register Sale';
-                ventaEditando = null;
-            }
-            
             function actualizarListaVentas() {
                 const fechaFiltro = filtroFecha.value;
                 const nombreFiltro = buscarNombre.value.toLowerCase();
@@ -1371,7 +1347,7 @@
                                 ${venta.estado === 'pagado' ? '✅ ' + (selectorIdioma.value === 'es' ? 'Pagado' : 'Paid') : 
                                 '⏳ ' + (selectorIdioma.value === 'es' ? 'Pendiente' : 'Pending')}
                             </button>
-                            <button class="action-btn btn-edit" data-id="${venta.id}">✏️ ${selectorIdioma.value === 'es' ? 'Editar' : 'Edit'}</button>
+                            <button class="action-btn btn-edit edit-sale" data-id="${venta.id}">✏️ ${selectorIdioma.value === 'es' ? 'Editar' : 'Edit'}</button>
                             <button class="action-btn btn-danger delete-sale" data-id="${venta.id}">🗑️ ${selectorIdioma.value === 'es' ? 'Eliminar' : 'Delete'}</button>
                         </div>
                     `;
@@ -1387,8 +1363,8 @@
                     });
                 });
                 
-                // Agregar event listeners para editar ventas
-                document.querySelectorAll('.btn-edit').forEach(btn => {
+                // Agregar event listeners para editar venta
+                document.querySelectorAll('.edit-sale').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const id = parseInt(this.getAttribute('data-id'));
                         editarVenta(id);
@@ -1404,27 +1380,6 @@
                 });
             }
             
-            function editarVenta(id) {
-                const venta = ventas.find(v => v.id === id);
-                if (venta) {
-                    // Llenar el formulario con los datos de la venta
-                    document.getElementById('fecha').value = venta.fecha;
-                    document.getElementById('comprador').value = venta.comprador;
-                    document.getElementById('metodo-pago').value = venta.metodoPago;
-                    document.getElementById('cantidad').value = venta.cantidad;
-                    document.getElementById('litros').value = venta.litros;
-                    document.getElementById('monto').value = venta.monto;
-                    
-                    // Cambiar el texto del botón a "Actualizar Venta"
-                    const submitButton = saleForm.querySelector('button[type="submit"]');
-                    submitButton.textContent = selectorIdioma.value === 'es' ? 'Actualizar Venta' : 'Update Sale';
-                    ventaEditando = id;
-                    
-                    // Desplazarse al formulario
-                    document.getElementById('registro').scrollIntoView();
-                }
-            }
-            
             function toggleEstadoVenta(id) {
                 ventas = ventas.map(venta => {
                     if (venta.id === id) {
@@ -1436,6 +1391,30 @@
                 guardarVentas();
                 actualizarListaVentas();
                 actualizarEstadisticas();
+            }
+            
+            function editarVenta(id) {
+                // Buscar la venta por ID
+                const venta = ventas.find(v => v.id === id);
+                if (venta) {
+                    // Llenar el formulario con los datos de la venta
+                    document.getElementById('fecha').value = venta.fecha;
+                    document.getElementById('comprador').value = venta.comprador;
+                    document.getElementById('metodo-pago').value = venta.metodoPago;
+                    document.getElementById('cantidad').value = venta.cantidad;
+                    document.getElementById('litros').value = venta.litros;
+                    document.getElementById('monto').value = venta.monto;
+                    
+                    // Eliminar la venta actual para reemplazarla después de editar
+                    ventas = ventas.filter(v => v.id !== id);
+                    guardarVentas();
+                    actualizarListaVentas();
+                    actualizarEstadisticas();
+                    
+                    alert(selectorIdioma.value === 'es' ? 
+                        'Venta cargada para edición. Complete los cambios y registre nuevamente.' : 
+                        'Sale loaded for editing. Complete the changes and register again.');
+                }
             }
             
             function eliminarVenta(id) {
@@ -1498,13 +1477,13 @@
                         mensajeVentas.textContent = '¡🚀Día alto en ventas🔥!';
                         mensajeVentas.classList.add('high-sales');
                     } else if (totalBotellones >= 10) {
-                        mensajeVentas.textContent = '👍🏽Día mediano en ventas🫣';
+                        mensajeVentas.textContent = '🫢Día mediano en ventas🫣';
                         mensajeVentas.classList.add('medium-sales');
                     } else if (totalBotellones < 5) {
-                        mensajeVentas.textContent = '😢Día bajo en ventas🫢';
+                        mensajeVentas.textContent = '😢Día bajo en ventas🤦🏽';
                         mensajeVentas.classList.add('low-sales');
                     } else {
-                        mensajeVentas.textContent = 'Ventas regulares';
+                        mensajeVentas.textContent = '🙌🏽Ventas regulares🤷🏽';
                         mensajeVentas.classList.add('medium-sales');
                     }
                 } else {
