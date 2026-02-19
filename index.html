@@ -2,551 +2,797 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SIDVA</title>
     <link href="icon.png" rel="icon">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
     <style>
         :root {
-            --primary: #3498db;
-            --secondary: #2ecc71;
-            --danger: #e74c3c;
-            --warning: #f39c12;
-            --dark: #2c3e50;
-            --light: #ecf0f1;
-            --gray: #95a5a6;
+            --primary: #007AFF;
+            --secondary: #34C759;
+            --danger: #FF3B30;
+            --warning: #FF9500;
+            --dark: #1C1C1E;
+            --light: #F2F2F7;
+            --gray: #8E8E93;
             --dollar: #27ae60;
-            --text-color: #333;
-            --bg-color: #f5f7fa;
-            --card-bg: white;
-            --header-bg: linear-gradient(135deg, #3498db, #2ecc71);
-            --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            --text-color: #1C1C1E;
+            --bg-color: #F2F2F7;
+            --card-bg: #FFFFFF;
+            --header-bg: linear-gradient(135deg, #007AFF, #5856D6);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius: 16px;
+            --radius-sm: 12px;
         }
 
         .dark-mode {
-            --text-color: #ecf0f1;
-            --bg-color: #1a1a2e;
-            --card-bg: #2c3e50;
-            --header-bg: linear-gradient(135deg, #2c3e50, #34495e);
-            --shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            --text-color: #FFFFFF;
+            --bg-color: #000000;
+            --card-bg: #1C1C1E;
+            --header-bg: linear-gradient(135deg, #0A84FF, #5E5CE6);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
         .high-contrast {
-            --text-color: #ffffff;
+            --text-color: #FFFFFF;
             --bg-color: #000000;
             --card-bg: #111111;
             --header-bg: linear-gradient(135deg, #000000, #333333);
-            --primary: #ffcc00;
-            --secondary: #00ccff;
-            --danger: #ff3300;
-            --warning: #ff9900;
-            --shadow: 0 2px 5px rgba(255, 255, 255, 0.2);
+            --primary: #FFD700;
+            --secondary: #00FFFF;
+            --danger: #FF4444;
+            --warning: #FFA500;
+            --shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
-        
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.6;
+            line-height: 1.5;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            padding-bottom: 100px;
+            transition: var(--transition);
+            overflow-x: hidden;
         }
-        
-        .container {
-            width: 100%;
-            max-width: 100%;
-            padding: 15px;
-            margin: 0 auto;
-            flex: 1;
-        }
-        
-        header {
+
+        /* Header Estilo iOS */
+        .ios-header {
             background: var(--header-bg);
             color: white;
-            padding: 15px 0;
+            padding: 50px 20px 30px;
             text-align: center;
-            border-radius: 0 0 15px 15px;
+            border-radius: 0 0 30px 30px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .ios-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse-bg 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .ios-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .ios-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            font-weight: 400;
+        }
+
+        /* Tarjetas Estilo iOS */
+        .ios-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: none;
             box-shadow: var(--shadow);
             margin-bottom: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+            animation: slideUp 0.5s ease-out;
         }
-        
-        h1, h2, h3 {
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ios-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .ios-card .card-header {
+            background: transparent;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
             color: var(--text-color);
         }
-        
-        .nav-tabs {
-            display: flex;
-            justify-content: space-around;
+
+        .dark-mode .ios-card .card-header {
+            border-bottom-color: rgba(255,255,255,0.1);
+        }
+
+        .ios-card .card-body {
+            padding: 20px;
+        }
+
+        /* Formularios Estilo iOS */
+        .form-control, .form-select {
+            background: var(--light);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            font-size: 16px;
+            transition: var(--transition);
+            color: var(--text-color);
+        }
+
+        .dark-mode .form-control, .dark-mode .form-select {
+            background: #2C2C2E;
+            color: white;
+        }
+
+        .form-control:focus, .form-select:focus {
             background: var(--card-bg);
-            border-radius: 50px;
-            padding: 5px;
-            margin: 15px 0;
-            box-shadow: var(--shadow);
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.15);
+            transform: scale(1.02);
         }
-        
-        .nav-tab {
-            padding: 10px 12px;
-            border-radius: 50px;
-            text-align: center;
-            flex: 1;
-            margin: 0 3px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
+
+        .form-label {
+            font-weight: 600;
             color: var(--text-color);
-            min-width: 60px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 6px;
         }
-        
-        .nav-tab.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: var(--shadow);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: var(--shadow);
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: var(--text-color);
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            background-color: var(--card-bg);
-            color: var(--text-color);
-        }
-        
-        button {
-            background: var(--primary);
-            color: white;
+
+        /* Botones Estilo iOS */
+        .btn-ios {
+            border-radius: var(--radius-sm);
+            padding: 14px 24px;
+            font-weight: 600;
+            font-size: 1rem;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            width: 100%;
-            transition: all 0.3s;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            text-transform: none;
+            letter-spacing: 0;
         }
-        
-        button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+
+        .btn-ios:active {
+            transform: scale(0.96);
         }
-        
-        .btn-danger {
-            background: var(--danger);
+
+        .btn-ios::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
-        
-        .btn-success {
+
+        .btn-ios:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary-ios {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+        }
+
+        .btn-success-ios {
             background: var(--secondary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3);
         }
-        
-        .btn-warning {
+
+        .btn-danger-ios {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.3);
+        }
+
+        .btn-warning-ios {
             background: var(--warning);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 149, 0, 0.3);
         }
-        
-        /* MODIFICACIÓN: Estadísticas con 3 columnas siempre */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            width: 100%;
+
+        /* ============================================
+           BARRA DE NAVEGACIÓN FLOTANTE CENTRADA
+           ============================================ */
+        .floating-nav-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 1000;
+            pointer-events: none;
         }
-        
-        .stat-card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            min-height: 120px;
+
+        .floating-nav {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25), 
+                        0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0,0,0,0.08);
+            pointer-events: auto;
+            margin: 0 auto;
+            position: relative;
+            transform: translateZ(0);
+        }
+
+        .dark-mode .floating-nav {
+            background: rgba(28, 28, 30, 0.95);
+            border-color: rgba(255,255,255,0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 
+                        0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-item-ios {
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: center;
+            padding: 10px 16px;
+            border-radius: 22px;
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 64px;
+            color: var(--gray);
+            position: relative;
+            text-decoration: none;
+            flex-shrink: 0;
         }
-        
-        .stat-card.dollar {
-            background: linear-gradient(135deg, var(--card-bg), #e8f5e9);
+
+        .nav-item-ios i {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+            transition: var(--transition);
+        }
+
+        .nav-item-ios span {
+            font-size: 0.7rem;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-item-ios.active {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);
+        }
+
+        .nav-item-ios:active {
+            transform: scale(0.95);
+        }
+
+        .nav-indicator {
+            position: absolute;
+            bottom: 4px;
+            width: 4px;
+            height: 4px;
+            background: currentColor;
+            border-radius: 50%;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .nav-item-ios.active .nav-indicator {
+            opacity: 1;
+        }
+
+        .tab-content-ios {
+            display: none;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .tab-content-ios.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 400px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .stat-item-ios {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 16px 12px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item-ios::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .stat-item-ios:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-item-ios:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-item-ios.dollar {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
             border: 1px solid var(--secondary);
         }
-        
-        .stat-value {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 8px 0;
+
+        .dark-mode .stat-item-ios.dollar {
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .stat-value-ios {
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--text-color);
+            margin-bottom: 4px;
+            line-height: 1.2;
         }
-        
-        .stat-title {
+
+        .stat-label-ios {
+            font-size: 0.75rem;
             color: var(--gray);
-            font-size: 0.7rem;
             font-weight: 500;
+            line-height: 1.2;
         }
-        
-        .tasa-info {
-            font-size: 0.6rem;
-            color: var(--gray);
-            margin-top: 3px;
-        }
-        
-        .sales-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .sale-item {
+
+        .sale-item-ios {
             background: var(--card-bg);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 10px;
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: var(--shadow);
+            transition: var(--transition);
+            animation: slideInRight 0.4s ease-out;
+            border-left: 4px solid transparent;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .sale-item-ios:hover {
+            transform: translateX(4px);
+            border-left-color: var(--primary);
+        }
+
+        .sale-info-ios {
+            flex: 1;
+        }
+
+        .sale-title-ios {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: var(--text-color);
+        }
+
+        .sale-details-ios {
+            font-size: 0.85rem;
+            color: var(--gray);
+            display: flex;
+            gap: 8px;
             flex-wrap: wrap;
         }
-        
-        .sale-info {
-            flex: 1;
-            min-width: 200px;
+
+        .sale-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
-        
-        .sale-actions {
+
+        .badge-paid {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .badge-pending {
+            background: #FFF3E0;
+            color: #EF6C00;
+        }
+
+        .dark-mode .badge-paid {
+            background: #1B5E20;
+            color: #A5D6A7;
+        }
+
+        .dark-mode .badge-pending {
+            background: #E65100;
+            color: #FFCC80;
+        }
+
+        .sale-actions-ios {
             display: flex;
-            gap: 5px;
-            margin-top: 10px;
-            width: 100%;
-            justify-content: flex-end;
+            gap: 8px;
         }
-        
-        .action-btn {
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
+
+        .btn-icon-ios {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             border: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 36px;
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-edit {
-            background: var(--warning);
-        }
-        
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        
-        .status-paid {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-        
-        .status-pending {
-            background: #ffecb3;
-            color: #f57c00;
-        }
-        
-        .message-container {
-            text-align: center;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 15px 0;
-            font-weight: 500;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .low-sales {
-            background: #ffcdd2;
-            color: #c62828;
-        }
-        
-        .medium-sales {
-            background: #fff9c4;
-            color: #f9a825;
-        }
-        
-        .high-sales {
-            background: #c8e6c9;
-            color: #2e7d32;
-        }
-        
-        .search-box {
-            margin-bottom: 15px;
-            position: relative;
-        }
-        
-        .search-box i {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-        }
-        
-        .search-box input {
-            padding-left: 35px;
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
         }
 
-        /* Estilos para switches */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
+        .btn-icon-ios:hover {
+            transform: scale(1.1);
         }
 
-        .switch input {
+        .btn-icon-ios:active {
+            transform: scale(0.9);
+        }
+
+        .form-switch-ios {
+            position: relative;
+            display: inline-block;
+            width: 51px;
+            height: 31px;
+        }
+
+        .form-switch-ios input {
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        .slider {
+        .slider-ios {
             position: absolute;
             cursor: pointer;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
+            background-color: #E9E9EA;
+            transition: .3s;
+            border-radius: 31px;
         }
 
-        .slider:before {
+        .slider-ios:before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
+            height: 27px;
+            width: 27px;
+            left: 2px;
+            bottom: 2px;
             background-color: white;
-            transition: .4s;
+            transition: .3s;
             border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        input:checked + .slider {
-            background-color: var(--primary);
+        input:checked + .slider-ios {
+            background-color: var(--secondary);
         }
 
-        input:checked + .slider:before {
-            transform: translateX(26px);
+        input:checked + .slider-ios:before {
+            transform: translateX(20px);
         }
 
-        .switch-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: var(--card-bg);
-            border-radius: 8px;
+        .message-ios {
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: pulse-message 2s infinite;
             box-shadow: var(--shadow);
         }
 
-        .option-title {
-            font-weight: 500;
-            color: var(--text-color);
-            font-size: 0.9rem;
+        @keyframes pulse-message {
+            0%, 100% { transform: scale(1); box-shadow: var(--shadow); }
+            50% { transform: scale(1.02); box-shadow: var(--shadow-lg); }
         }
 
-        .option-description {
-            font-size: 0.7rem;
-            color: var(--gray);
-            margin-top: 3px;
+        .message-high {
+            background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+            color: #1B5E20;
         }
 
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #ddd;
-            font-size: 0.9rem;
+        .message-medium {
+            background: linear-gradient(135deg, #FFF9C4 0%, #FFF59D 100%);
+            color: #F57F17;
         }
 
-        .info-item:last-child {
-            border-bottom: none;
+        .message-low {
+            background: linear-gradient(135deg, #FFCDD2 0%, #EF9A9A 100%);
+            color: #B71C1C;
         }
 
-        .info-label {
-            font-weight: 500;
-            color: var(--text-color);
+        .dark-mode .message-high {
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+            color: #C8E6C9;
         }
 
-        .info-value {
-            color: var(--gray);
+        .dark-mode .message-medium {
+            background: linear-gradient(135deg, #F57F17 0%, #FF8F00 100%);
+            color: #FFF9C4;
         }
 
-        .chart-container {
-            width: 100%;
-            height: 150px;
-            margin: 15px 0;
-            position: relative;
+        .dark-mode .message-low {
+            background: linear-gradient(135deg, #B71C1C 0%, #C62828 100%);
+            color: #FFCDD2;
+        }
+
+        .spinner-ios {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .chart-container-ios {
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            gap: 40px;
+            gap: 30px;
+            height: 150px;
+            padding: 20px;
+            background: var(--light);
+            border-radius: var(--radius);
+            margin: 20px 0;
         }
 
-        .chart-bar {
-            width: 30px;
-            background-color: var(--primary);
-            border-radius: 4px 4px 0 0;
-            transition: height 1s ease-in-out;
+        .dark-mode .chart-container-ios {
+            background: #2C2C2E;
         }
 
-        .chart-label {
+        .chart-bar-ios {
+            width: 40px;
+            background: linear-gradient(to top, var(--primary), #5AC8FA);
+            border-radius: 8px 8px 0 0;
+            transition: height 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            min-height: 20px;
+        }
+
+        .chart-bar-ios::after {
+            content: attr(data-value);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-color);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .chart-bar-ios:hover::after {
+            opacity: 1;
+        }
+
+        .chart-label-ios {
             position: absolute;
             bottom: -25px;
-            width: 30px;
-            text-align: center;
-            font-size: 0.7rem;
-            color: var(--text-color);
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            padding: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
             color: var(--gray);
-            font-size: 0.8rem;
-            border-top: 1px solid #ddd;
+            white-space: nowrap;
         }
 
-        .language-selector {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            background-color: var(--card-bg);
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
             color: var(--text-color);
-            margin-bottom: 15px;
-            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* Ajustes para pantallas muy pequeñas */
-        @media (max-width: 480px) {
-            .nav-tab {
-                padding: 8px 6px;
-                font-size: 12px;
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray);
+            border-radius: 3px;
+        }
+
+        .animate-enter {
+            animation: slideUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .animate-enter:nth-child(1) { animation-delay: 0.1s; }
+        .animate-enter:nth-child(2) { animation-delay: 0.2s; }
+        .animate-enter:nth-child(3) { animation-delay: 0.3s; }
+        .animate-enter:nth-child(4) { animation-delay: 0.4s; }
+
+        @media (max-width: 380px) {
+            .floating-nav {
+                padding: 6px;
+                gap: 2px;
+            }
+            
+            .nav-item-ios {
+                padding: 8px 12px;
+                min-width: 56px;
+            }
+            
+            .nav-item-ios span {
+                font-size: 0.65rem;
+            }
+            
+            .ios-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .nav-item-ios {
+                padding: 6px 10px;
                 min-width: 50px;
             }
             
-            .stat-value {
-                font-size: 1rem;
+            .nav-item-ios i {
+                font-size: 1.2rem;
             }
             
-            .stat-title {
+            .nav-item-ios span {
                 font-size: 0.6rem;
-            }
-            
-            .stats-container {
-                gap: 6px;
-            }
-            
-            .stat-card {
-                padding: 8px 5px;
-                min-height: 100px;
-            }
-            
-            .sale-info {
-                min-width: 100%;
-            }
-            
-            .sale-actions {
-                justify-content: center;
-            }
-            
-            .option-title {
-                font-size: 0.8rem;
-            }
-            
-            .option-description {
-                font-size: 0.65rem;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stat-card.dollar {
-                grid-column: span 2;
             }
         }
 
@@ -554,385 +800,598 @@
             animation: none !important;
             transition: none !important;
         }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+
+        .toast-ios {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            animation: slideInRight 0.3s ease-out;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Indicador de guardado automático */
+        .autosave-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: var(--gray);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .autosave-indicator.show {
+            opacity: 1;
+        }
+
+        .autosave-indicator i {
+            color: var(--secondary);
+        }
+
+        .textarea-container {
+            position: relative;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1 data-i18n="app-title">💧Sistema de Ventas de Agua</h1>
-            <p data-i18n="app-subtitle">Gestiona tus ventas de forma eficiente</p>
-        </header>
-        
-        <div class="nav-tabs">
-            <div class="nav-tab active" data-tab="registro" data-i18n="registro">Registro</div>
-            <div class="nav-tab" data-tab="estadisticas" data-i18n="estadisticas">Estadísticas</div>
-            <div class="nav-tab" data-tab="acciones" data-i18n="acciones">Acciones</div>
-            <div class="nav-tab" data-tab="ajustes">⚙️</div>
-        </div>
-        
+    <!-- Header -->
+    <header class="ios-header animate__animated animate__fadeInDown">
+        <h1 data-i18n="app-title">💧 SIDVA</h1>
+        <p data-i18n="app-subtitle">Sistema Inteligente de Ventas de Agua</p>
+    </header>
+
+    <div class="container pb-5">
         <!-- Sección de Registro -->
-        <div id="registro" class="tab-content active">
-            <div class="card">
-                <h2 "nueva-venta">Nueva Venta✍🏽</h2>
-                <form id="sale-form">
-                    <div class="form-group">
-                        <label for="fecha" "fecha">Fecha📆:</label>
-                        <input type="date" id="fecha" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="comprador" data-i18n="nombre-comprador">Nombre del Comprador:</label>
-                        <input type="text" id="comprador" placeholder="Ingrese el nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="metodo-pago" data-i18n="metodo-pago">Método de Pago:</label>
-                        <select id="metodo-pago" required>
-                            <option value="">Seleccione...</option>
-                            <option value="efectivo">Efectivo 💵</option>
-                            <option value="movil">Pago Móvil 📲</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="cantidad" data-i18n="cantidad-botellones">Cantidad de Botellones:</label>
-                        <input type="number" id="cantidad" min="1" placeholder="Ej: 5" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="litros" data-i18n="litros-botellon">Litros por Botellón:</label>
-                        <input type="number" id="litros" min="1" value="20" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="monto" data-i18n="monto-bs">Monto en Bs:</label>
-                        <input type="number" id="monto" min="0" step="0.01" placeholder="Ej: 25.50" required>
-                    </div>
-                    <button type="submit" data-i18n="registrar-venta">Registrar Venta</button>
-                </form>
-            </div>
-            
-            <div class="card">
-                <h2 "filtrar-ventas">Ventas🫰🏽</h2>
-                <div class="form-group">
-                    <label for="filtro-fecha" "filtrar-fecha">Búsqueda por Fecha📆:</label>
-                    <input type="date" id="filtro-fecha">
+        <div id="registro" class="tab-content-ios active">
+            <div class="ios-card animate-enter">
+                <div class="card-header">
+                    <i class="bi bi-plus-circle-fill text-primary me-2"></i>
+                    <span data-i18n="nueva-venta">Nueva Venta</span>
                 </div>
-                <div class="search-box">
-                    <i>🔍</i>
-                    <input type="text" id="buscar-nombre" placeholder="Buscar por nombre...">
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2 "ventas-registradas">Ventas Registradas🫣</h2>
-                <div id="lista-ventas" class="sales-list">
-                    <!-- Las ventas se cargarán aquí dinámicamente -->
-                </div>
-            </div>
-        </div>
-        
-        <!-- Sección de Estadísticas -->
-        <div id="estadisticas" class="tab-content">
-            <div class="card">
-                <h2 "estadisticas-ventas">Estadísticas de Ventas📊</h2>
-                <div class="form-group">
-                    <label for="filtro-estadisticas" "filtrar-fecha">Búsqueda por Fecha📆:</label>
-                    <input type="date" id="filtro-estadisticas">
-                </div>
-                <div class="form-group">
-                    <label for="tasa-dolar" data-i18n="tasa-bcv">Tasa BCV (Bs/$):</label>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <input type="number" id="tasa-dolar" step="0.01" min="1" placeholder="Tasa de cambio">
-                        <button type="button" id="actualizar-tasa" class="btn-success" style="width: auto; padding: 10px;">
-                            <span id="texto-boton" data-i18n="actualizar">🔄 Actualizar</span>
-                            <span id="loading-boton" class="loading" style="display: none;"></span>
+                <div class="card-body">
+                    <form id="sale-form">
+                        <div class="mb-3">
+                            <label class="form-label" data-i18n="fecha">
+                                <i class="bi bi-calendar3"></i> Fecha
+                            </label>
+                            <input type="date" class="form-control" id="fecha" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label" data-i18n="nombre-comprador">
+                                <i class="bi bi-person-fill"></i> Nombre del Comprador
+                            </label>
+                            <input type="text" class="form-control" id="comprador" placeholder="Ingrese el nombre" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label" data-i18n="metodo-pago">
+                                <i class="bi bi-credit-card-fill"></i> Método de Pago
+                            </label>
+                            <select class="form-select" id="metodo-pago" required>
+                                <option value="">Seleccione...</option>
+                                <option value="efectivo">💵 Efectivo</option>
+                                <option value="movil">📲 Pago Móvil</option>
+                            </select>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label" data-i18n="cantidad-botellones">
+                                    <i class="bi bi-droplet-fill"></i> Cantidad
+                                </label>
+                                <input type="number" class="form-control" id="cantidad" min="1" placeholder="Ej: 5" required>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label" data-i18n="litros-botellon">
+                                    <i class="bi bi-moisture"></i> Litros
+                                </label>
+                                <input type="number" class="form-control" id="litros" min="1" value="20" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label" data-i18n="monto-bs">
+                                <i class="bi bi-cash-stack"></i> Monto en Bs
+                            </label>
+                            <input type="number" class="form-control" id="monto" min="0" step="0.01" placeholder="Ej: 25.50" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary-ios btn-ios w-100">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <span data-i18n="registrar-venta">Registrar Venta</span>
                         </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="ios-card animate-enter">
+                <div class="card-header">
+                    <i class="bi bi-funnel-fill text-warning me-2"></i>
+                    <span data-i18n="filtrar-ventas">Filtrar Ventas</span>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label" data-i18n="filtrar-fecha">
+                            <i class="bi bi-calendar-check"></i> Por Fecha
+                        </label>
+                        <input type="date" class="form-control" id="filtro-fecha">
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label">
+                            <i class="bi bi-search"></i> Buscar
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0">
+                                <i class="bi bi-search text-muted"></i>
+                            </span>
+                            <input type="text" class="form-control border-0 bg-light" id="buscar-nombre" placeholder="Nombre del comprador...">
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- MODIFICACIÓN: Estadísticas en grid de 3 columnas -->
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-title" "total-botellones">Total Botellones Vendidos🚰</div>
-                    <div class="stat-value" id="total-botellones">0</div>
+
+            <!-- Lista de Ventas -->
+            <div class="ios-card animate-enter">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>
+                        <i class="bi bi-list-check text-success me-2"></i>
+                        <span data-i18n="ventas-registradas">Ventas Registradas</span>
+                    </span>
+                    <span class="badge bg-primary rounded-pill" id="contador-ventas">0</span>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-title" "botellones-pendientes">Botellones Pendientes⌛</div>
-                    <div class="stat-value" id="botellones-pendientes">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title" "litros-vendidos">Litros Vendidos💧</div>
-                    <div class="stat-value" id="litros-vendidos">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">Efectivo 💵</div>
-                    <div class="stat-value" id="total-efectivo">0 Bs</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">Pago Móvil 📲</div>
-                    <div class="stat-value" id="total-movil">0 Bs</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title" "total-general">Total General🪙</div>
-                    <div class="stat-value" id="total-general">0 Bs</div>
-                </div>
-                <div class="stat-card dollar">
-                    <div class="stat-title" "total-dolares">Total en 💰</div>
-                    <div class="stat-value" id="total-dolares">0.00 $</div>
-                    <div class="tasa-info" id="info-tasa">Tasa: 0.00 Bs/$</div>
+                <div class="card-body p-0">
+                    <div id="lista-ventas" class="p-3">
+                        <div class="empty-state">
+                            <i class="bi bi-inbox"></i>
+                            <p class="mb-0" data-i18n="no-ventas">No hay ventas registradas</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        
+
+        <!-- Sección de Estadísticas -->
+        <div id="estadisticas" class="tab-content-ios">
+            <div class="ios-card animate-enter">
+                <div class="card-header">
+                    <i class="bi bi-graph-up-arrow text-info me-2"></i>
+                    <span data-i18n="estadisticas-ventas">Estadísticas de Ventas</span>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label" data-i18n="filtrar-fecha">
+                            <i class="bi bi-calendar-range"></i> Filtrar por Fecha
+                        </label>
+                        <input type="date" class="form-control" id="filtro-estadisticas">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label" data-i18n="tasa-bcv">
+                            <i class="bi bi-currency-exchange"></i> Tasa BCV (Bs/$)
+                        </label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="tasa-dolar" step="0.01" min="1" placeholder="Tasa de cambio">
+                            <button class="btn btn-success-ios btn-ios" type="button" id="actualizar-tasa">
+                                <span id="texto-boton">
+                                    <i class="bi bi-arrow-repeat me-1"></i>
+                                    <span data-i18n="actualizar">Actualizar</span>
+                                </span>
+                                <span id="loading-boton" class="spinner-ios" style="display: none;"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Estadísticas -->
+            <div class="stats-grid">
+                <div class="stat-item-ios animate-enter">
+                    <i class="bi bi-droplet-fill stat-icon text-primary"></i>
+                    <div class="stat-value-ios" id="total-botellones">0</div>
+                    <div class="stat-label-ios" data-i18n="total-botellones">Botellones Vendidos</div>
+                </div>
+                
+                <div class="stat-item-ios animate-enter">
+                    <i class="bi bi-hourglass-split stat-icon text-warning"></i>
+                    <div class="stat-value-ios" id="botellones-pendientes">0</div>
+                    <div class="stat-label-ios" data-i18n="botellones-pendientes">Pendientes</div>
+                </div>
+                
+                <div class="stat-item-ios animate-enter">
+                    <i class="bi bi-moisture stat-icon text-info"></i>
+                    <div class="stat-value-ios" id="litros-vendidos">0</div>
+                    <div class="stat-label-ios" data-i18n="litros-vendidos">Litros Vendidos</div>
+                </div>
+                
+                <div class="stat-item-ios animate-enter">
+                    <i class="bi bi-cash-coin stat-icon text-success"></i>
+                    <div class="stat-value-ios" id="total-efectivo">0</div>
+                    <div class="stat-label-ios">Efectivo Bs</div>
+                </div>
+                
+                <div class="stat-item-ios animate-enter">
+                    <i class="bi bi-phone stat-icon text-primary"></i>
+                    <div class="stat-value-ios" id="total-movil">0</div>
+                    <div class="stat-label-ios">Pago Móvil Bs</div>
+                </div>
+                
+                <div class="stat-item-ios animate-enter">
+                    <i class="bi bi-coin stat-icon text-warning"></i>
+                    <div class="stat-value-ios" id="total-general">0</div>
+                    <div class="stat-label-ios" data-i18n="total-general">Total Bs</div>
+                </div>
+                
+                <div class="stat-item-ios dollar animate-enter" style="grid-column: 1 / -1;">
+                    <i class="bi bi-currency-dollar stat-icon text-success"></i>
+                    <div class="stat-value-ios text-success" id="total-dolares">$0.00</div>
+                    <div class="stat-label-ios" id="info-tasa">Tasa: 0.00 Bs/$</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Sección de Acciones -->
-        <div id="acciones" class="tab-content">
-            <div class="card">
-                <h2 "mensaje-dia">Mensaje del Día💯</h2>
-                <div id="mensaje-ventas" class="message-container">
-                    <!-- Mensaje animado según volumen de ventas -->
+        <div id="acciones" class="tab-content-ios">
+            <div class="message-ios message-medium" id="mensaje-ventas">
+                <i class="bi bi-emoji-neutral-fill me-2"></i>
+                <span>Cargando...</span>
+            </div>
+
+            <div class="ios-card animate-enter">
+                <div class="card-header">
+                    <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>
+                    <span data-i18n="generar-corte">Generar Corte del Día</span>
+                </div>
+                <div class="card-body">
+                    <!-- ============================================
+                         CAMPO DE OBSERVACIÓN CON GUARDADO AUTOMÁTICO
+                         ============================================ -->
+                    <div class="mb-3 textarea-container">
+                        <label class="form-label" data-i18n="observacion">
+                            <i class="bi bi-chat-left-text"></i> Observación
+                        </label>
+                        <textarea class="form-control" id="observacion" rows="4" 
+                            placeholder="Escribe una observación para el corte... Esta se guardará automáticamente."
+                            style="resize: vertical; min-height: 100px;"></textarea>
+                        <div class="autosave-indicator" id="autosave-indicator">
+                            <i class="bi bi-check-circle-fill"></i> Guardado
+                        </div>
+                    </div>
+                    <button class="btn btn-success-ios btn-ios w-100" id="generar-pdf">
+                        <i class="bi bi-file-earmark-arrow-down-fill me-2"></i>
+                        <span data-i18n="generar-corte">Generar Reporte PDF</span>
+                    </button>
                 </div>
             </div>
-            
-            <div class="card">
-                <h2 data-i18n="generar-corte">Generar Corte del Día</h2>
-                <div class="form-group">
-                    <label for="observacion" "observacion">Observación🤔:</label>
-                    <textarea id="observacion" rows="3" placeholder="Escribe una observación para el corte..."></textarea>
+
+            <div class="ios-card animate-enter">
+                <div class="card-header">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+                    <span data-i18n="gestion-datos">Gestión de Datos</span>
                 </div>
-                <button id="generar-pdf" class="btn-success">📊 <span data-i18n="generar-corte">Generar Corte del Día</span></button>
-            </div>
-            
-            <div class="card">
-                <h2 data-i18n="gestion-datos">Gestión de Datos</h2>
-                <p data-i18n="reset-advertencia">¿Necesitas reiniciar todos los datos? Esta acción no se puede deshacer.</p>
-                <button id="reset-datos" class="btn-danger">🔄 <span data-i18n="reset-datos">Resetear Todos los Datos</span></button>
+                <div class="card-body">
+                    <p class="text-muted mb-3" data-i18n="reset-advertencia">
+                        ¿Necesitas reiniciar todos los datos? Esta acción no se puede deshacer.
+                    </p>
+                    <button class="btn btn-danger-ios btn-ios w-100" id="reset-datos">
+                        <i class="bi bi-trash-fill me-2"></i>
+                        <span data-i18n="reset-datos">Resetear Todos los Datos</span>
+                    </button>
+                </div>
             </div>
         </div>
-        
+
         <!-- Sección de Ajustes -->
-        <div id="ajustes" class="tab-content">
-            <div class="card">
-                <h2 data-i18n="modo-oscuro">Modo Oscuro</h2>
-                <div class="switch-container">
-                    <div>
-                        <div class="option-title" data-i18n="activar-modo-oscuro">Activar Modo Oscuro</div>
-                        <div class="option-description" data-i18n="desc-modo-oscuro">Cambia la apariencia de la aplicación a un tema oscuro</div>
+        <div id="ajustes" class="tab-content-ios">
+            <div class="ios-card animate-enter">
+                <div class="card-header">
+                    <i class="bi bi-moon-stars-fill text-primary me-2"></i>
+                    <span data-i18n="modo-oscuro">Apariencia</span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <div class="fw-semibold" data-i18n="activar-modo-oscuro">Modo Oscuro</div>
+                            <small class="text-muted" data-i18n="desc-modo-oscuro">Cambia a tema oscuro</small>
+                        </div>
+                        <label class="form-switch-ios">
+                            <input type="checkbox" id="modo-oscuro">
+                            <span class="slider-ios"></span>
+                        </label>
                     </div>
-                    <label class="switch">
-                        <input type="checkbox" id="modo-oscuro">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2 data-i18n="informacion-app">Información de la Aplicación</h2>
-                <div class="info-item">
-                    <span class="info-label" data-i18n="version-interfaz">Versión Interfaz:</span>
-                    <span class="info-value">7.5.8</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-i18n="version-webapp">Versión WebApp:</span>
-                    <span class="info-value">8.7.9</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-i18n="actualizacion-seguridad">Actualización de Seguridad:</span>
-                    <span class="info-value">2025-09-09</span>
-                </div>
-                
-                <div class="info-item">
-                    <span class="info-label" data-i18n="ultima-actualizacin">Ultima Actualizacion:</span>
-                    <span class="info-value">2025-09-11</span>
-                </div>
-                
-            </div>
-            
-            <div class="card">
-                <h2 data-i18n="accesibilidad">Accesibilidad</h2>
-                <div class="switch-container">
-                    <div>
-                        <div class="option-title" data-i18n="alto-contraste">Alto Contraste</div>
-                        <div class="option-description" data-i18n="desc-alto-contraste">Aumenta el contraste de colores para mejor visibilidad</div>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="alto-contraste">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                
-                <div class="switch-container">
-                    <div>
-                        <div class="option-title" data-i18n="animaciones">Animaciones</div>
-                        <div class="option-description" data-i18n="desc-animaciones">Activa o desactiva las animaciones en la aplicación</div>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="animaciones" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2 data-i18n="idioma">Idioma</h2>
-                <select class="language-selector" id="selector-idioma">
-                    <option value="es">Español</option>
-                    <option value="en">English</option>
-                </select>
-            </div>
-            
-            <div class="card">
-                <h2 data-i18n="uso-internet">Uso de Internet</h2>
-                <p data-i18n="datos-webapp">Datos utilizados por la WebApp:</p>
-                
-                <div class="chart-container" id="grafico-internet">
-                    <div style="position: relative;">
-                        <div class="chart-bar" id="barra-enviados" style="height: 0px;"></div>
-                        <div class="chart-label" data-i18n="enviados">Enviados</div>
-                    </div>
-                    <div style="position: relative;">
-                        <div class="chart-bar" id="barra-recibidos" style="height: 0px;"></div>
-                        <div class="chart-label" data-i18n="recibidos">Recibidos</div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-semibold" data-i18n="alto-contraste">Alto Contraste</div>
+                            <small class="text-muted" data-i18n="desc-alto-contraste">Mejor visibilidad</small>
+                        </div>
+                        <label class="form-switch-ios">
+                            <input type="checkbox" id="alto-contraste">
+                            <span class="slider-ios"></span>
+                        </label>
                     </div>
                 </div>
-                
-                <div class="info-item">
-                    <span class="info-label" data-i18n="total-enviado">Total enviado:</span>
-                    <span class="info-value" id="total-enviado">0 KB</span>
-                </div>
-                
-                <div class="info-item">
-                    <span class="info-label" data-i18n="total-recibido">Total recibido:</span>
-                    <span class="info-value" id="total-recibido">0 KB</span>
-                </div>
-                
-                <button id="reiniciar-contadores" class="btn-warning">🔄 <span data-i18n="reiniciar-contadores">Reiniciar Contadores</span></button>
             </div>
-            
-            <div class="footer">
-                <p>©2025 Todos los derechos reservados, Dev. RogerWeb</p>
+
+            <div class="ios-card animate-enter">
+                <div class="card-header">
+                    <i class="bi bi-globe me-2"></i>
+                    <span data-i18n="idioma">Idioma</span>
+                </div>
+                <div class="card-body">
+                    <select class="form-select" id="selector-idioma">
+                        <option value="es">🇪🇸 Español</option>
+                        <option value="en">🇺🇸 English</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="ios-card animate-enter">
+                <div class="card-header">
+                    <i class="bi bi-info-circle-fill text-info me-2"></i>
+                    <span data-i18n="informacion-app">Información</span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted">Versión App</span>
+                        <span class="fw-semibold">8.9.9</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted">Interfaz</span>
+                        <span class="fw-semibold">9.5.8</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted">Seguridad</span>
+                        <span class="fw-semibold">2026-02-15</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2">
+                        <span class="text-muted">Actualización</span>
+                        <span class="fw-semibold">2026-02-19</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ios-card animate-enter">
+                <div class="card-header">
+                    <i class="bi bi-wifi text-success me-2"></i>
+                    <span data-i18n="uso-internet">Uso de Datos</span>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container-ios mb-3">
+                        <div style="position: relative; height: 100%; display: flex; align-items: flex-end;">
+                            <div class="chart-bar-ios" id="barra-enviados" style="height: 0px;" data-value="0 KB"></div>
+                            <div class="chart-label-ios" data-i18n="enviados">Enviados</div>
+                        </div>
+                        <div style="position: relative; height: 100%; display: flex; align-items: flex-end;">
+                            <div class="chart-bar-ios" id="barra-recibidos" style="height: 0px;" data-value="0 KB"></div>
+                            <div class="chart-label-ios" data-i18n="recibidos">Recibidos</div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between py-2 border-bottom">
+                        <span class="text-muted" data-i18n="total-enviado">Total enviado</span>
+                        <span class="fw-semibold" id="total-enviado">0 KB</span>
+                    </div>
+                    <div class="d-flex justify-content-between py-2 mb-3">
+                        <span class="text-muted" data-i18n="total-recibido">Total recibido</span>
+                        <span class="fw-semibold" id="total-recibido">0 KB</span>
+                    </div>
+                    
+                    <button class="btn btn-warning-ios btn-ios w-100" id="reiniciar-contadores">
+                        <i class="bi bi-arrow-counterclockwise me-2"></i>
+                        <span data-i18n="reiniciar-contadores">Reiniciar Contadores</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="ios-card animate-enter">
+                <div class="card-header">
+                    <i class="bi bi-sliders text-secondary me-2"></i>
+                    <span data-i18n="animaciones">Animaciones</span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-semibold" data-i18n="animaciones">Efectos Visuales</div>
+                            <small class="text-muted" data-i18n="desc-animaciones">Transiciones suaves</small>
+                        </div>
+                        <label class="form-switch-ios">
+                            <input type="checkbox" id="animaciones" checked>
+                            <span class="slider-ios"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-muted py-4" style="font-size: 0.8rem;">
+                <p class="mb-0">© 2026 SIDVA - Dev. RogerWeb</p>
+                <small>Todos los derechos reservados</small>
             </div>
         </div>
     </div>
 
+    <!-- Barra de Navegación Flotante Centrada -->
+    <div class="floating-nav-container">
+        <nav class="floating-nav animate__animated animate__fadeInUp">
+            <a class="nav-item-ios active" data-tab="registro" href="#">
+                <i class="bi bi-plus-circle-fill"></i>
+                <span data-i18n="registro">Registrar</span>
+                <div class="nav-indicator"></div>
+            </a>
+            <a class="nav-item-ios" data-tab="estadisticas" href="#">
+                <i class="bi bi-bar-chart-fill"></i>
+                <span data-i18n="estadisticas">Stats</span>
+                <div class="nav-indicator"></div>
+            </a>
+            <a class="nav-item-ios" data-tab="acciones" href="#">
+                <i class="bi bi-lightning-charge-fill"></i>
+                <span data-i18n="acciones">Acciones</span>
+                <div class="nav-indicator"></div>
+            </a>
+            <a class="nav-item-ios" data-tab="ajustes" href="#">
+                <i class="bi bi-gear-fill"></i>
+                <span data-i18n="ajustes">Ajustes</span>
+                <div class="nav-indicator"></div>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        // Esperar a que se carguen las librerías de jsPDF
         window.jsPDF = window.jspdf.jsPDF;
         
-        // Objeto de traducciones
         const translations = {
             es: {
-                "app-title": "💧 Sistema de Ventas de Agua",
-                "app-subtitle": "Gestiona tus ventas de forma eficiente",
-                "registro": "Registro",
+                "app-title": "💧 SIDVA",
+                "app-subtitle": "Sistema Inteligente de Ventas de Agua",
+                "registro": "Registrar",
                 "estadisticas": "Estadísticas",
                 "acciones": "Acciones",
+                "ajustes": "Ajustes",
                 "nueva-venta": "Nueva Venta",
-                "fecha": "Fecha:",
-                "nombre-comprador": "Nombre del Comprador:",
-                "metodo-pago": "Método de Pago:",
-                "cantidad-botellones": "Cantidad de Botellones:",
-                "litros-botellon": "Litros por Botellón:",
-                "monto-bs": "Monto en Bs:",
+                "fecha": "Fecha",
+                "nombre-comprador": "Nombre del Comprador",
+                "metodo-pago": "Método de Pago",
+                "cantidad-botellones": "Cantidad",
+                "litros-botellon": "Litros",
+                "monto-bs": "Monto en Bs",
                 "registrar-venta": "Registrar Venta",
                 "filtrar-ventas": "Filtrar Ventas",
-                "filtrar-fecha": "Filtrar por Fecha:",
+                "filtrar-fecha": "Filtrar por Fecha",
                 "ventas-registradas": "Ventas Registradas",
+                "no-ventas": "No hay ventas registradas",
                 "estadisticas-ventas": "Estadísticas de Ventas",
-                "tasa-bcv": "Tasa BCV (Bs/$):",
-                "actualizar": "🔄 Actualizar",
-                "total-botellones": "Total Botellones Vendidos",
-                "botellones-pendientes": "Botellones Pendientes",
+                "tasa-bcv": "Tasa BCV (Bs/$)",
+                "actualizar": "Actualizar",
+                "total-botellones": "Botellones Vendidos",
+                "botellones-pendientes": "Pendientes",
                 "litros-vendidos": "Litros Vendidos",
                 "total-general": "Total General",
                 "total-dolares": "Total en $",
                 "mensaje-dia": "Mensaje del Día",
-                "generar-corte": "Generar Corte del Día",
-                "observacion": "Observación:",
+                "generar-corte": "Generar Reporte PDF",
+                "observacion": "Observación",
                 "gestion-datos": "Gestión de Datos",
                 "reset-advertencia": "¿Necesitas reiniciar todos los datos? Esta acción no se puede deshacer.",
                 "reset-datos": "Resetear Todos los Datos",
-                "modo-oscuro": "Modo Oscuro",
-                "activar-modo-oscuro": "Activar Modo Oscuro",
-                "desc-modo-oscuro": "Cambia la apariencia de la aplicación a un tema oscuro",
-                "informacion-app": "Información de la Aplicación",
-                "version-interfaz": "Versión Interfaz:",
-                "version-webapp": "Versión WebApp:",
-                "actualizacion-seguridad": "Actualización de Seguridad:",
+                "modo-oscuro": "Apariencia",
+                "activar-modo-oscuro": "Modo Oscuro",
+                "desc-modo-oscuro": "Cambia a tema oscuro",
+                "informacion-app": "Información",
                 "accesibilidad": "Accesibilidad",
                 "alto-contraste": "Alto Contraste",
-                "desc-alto-contraste": "Aumenta el contraste de colores para mejor visibilidad",
+                "desc-alto-contraste": "Mejor visibilidad",
                 "animaciones": "Animaciones",
-                "desc-animaciones": "Activa o desactiva las animaciones en la aplicación",
+                "desc-animaciones": "Transiciones suaves",
                 "idioma": "Idioma",
-                "uso-internet": "Uso de Internet",
-                "datos-webapp": "Datos utilizados por la WebApp:",
+                "uso-internet": "Uso de Datos",
+                "datos-webapp": "Datos utilizados:",
                 "enviados": "Enviados",
                 "recibidos": "Recibidos",
-                "total-enviado": "Total enviado:",
-                "total-recibido": "Total recibido:",
-                "reiniciar-contadores": "Reiniciar Contadores"
+                "total-enviado": "Total enviado",
+                "total-recibido": "Total recibido",
+                "reiniciar-contadores": "Reiniciar Contadores",
+                "venta-registrada": "¡Venta registrada exitosamente!",
+                "venta-eliminada": "Venta eliminada",
+                "datos-reseteados": "Todos los datos han sido eliminados",
+                "confirmar-reset": "¿Estás seguro? Esta acción no se puede deshacer.",
+                "confirmar-eliminar": "¿Eliminar esta venta?",
+                "corte-generado": "Reporte PDF generado",
+                "error-tasa": "No se pudo obtener la tasa. Intente manualmente.",
+                "observacion-guardada": "Observación guardada automáticamente"
             },
             en: {
-                "app-title": "💧 Water Sales System",
-                "app-subtitle": "Manage your sales efficiently",
+                "app-title": "💧 SIDVA",
+                "app-subtitle": "Smart Water Sales System",
                 "registro": "Register",
-                "estadisticas": "Statistics",
+                "estadisticas": "Stats",
                 "acciones": "Actions",
+                "ajustes": "Settings",
                 "nueva-venta": "New Sale",
-                "fecha": "Date:",
-                "nombre-comprador": "Buyer Name:",
-                "metodo-pago": "Payment Method:",
-                "cantidad-botellones": "Number of Bottles:",
-                "litros-botellon": "Liters per Bottle:",
-                "monto-bs": "Amount in Bs:",
+                "fecha": "Date",
+                "nombre-comprador": "Buyer Name",
+                "metodo-pago": "Payment Method",
+                "cantidad-botellones": "Quantity",
+                "litros-botellon": "Liters",
+                "monto-bs": "Amount in Bs",
                 "registrar-venta": "Register Sale",
                 "filtrar-ventas": "Filter Sales",
-                "filtrar-fecha": "Filter by Date:",
+                "filtrar-fecha": "Filter by Date",
                 "ventas-registradas": "Registered Sales",
+                "no-ventas": "No sales registered",
                 "estadisticas-ventas": "Sales Statistics",
-                "tasa-bcv": "BCV Rate (Bs/$):",
-                "actualizar": "🔄 Update",
-                "total-botellones": "Total Bottles Sold",
-                "botellones-pendientes": "Pending Bottles",
+                "tasa-bcv": "BCV Rate (Bs/$)",
+                "actualizar": "Update",
+                "total-botellones": "Bottles Sold",
+                "botellones-pendientes": "Pending",
                 "litros-vendidos": "Liters Sold",
                 "total-general": "Total General",
                 "total-dolares": "Total in $",
-                "mensaje-dia": "Message of the Day",
-                "generar-corte": "Generate Daily Report",
-                "observacion": "Observation:",
+                "mensaje-dia": "Daily Message",
+                "generar-corte": "Generate PDF Report",
+                "observacion": "Observation",
                 "gestion-datos": "Data Management",
-                "reset-advertencia": "Do you need to reset all data? This action cannot be undone.",
+                "reset-advertencia": "Do you need to reset all data? This cannot be undone.",
                 "reset-datos": "Reset All Data",
-                "modo-oscuro": "Dark Mode",
-                "activar-modo-oscuro": "Enable Dark Mode",
-                "desc-modo-oscuro": "Changes the app appearance to a dark theme",
-                "informacion-app": "Application Information",
-                "version-interfaz": "Interface Version:",
-                "version-webapp": "WebApp Version:",
-                "actualizacion-seguridad": "Security Update:",
+                "modo-oscuro": "Appearance",
+                "activar-modo-oscuro": "Dark Mode",
+                "desc-modo-oscuro": "Switch to dark theme",
+                "informacion-app": "Information",
                 "accesibilidad": "Accessibility",
                 "alto-contraste": "High Contrast",
-                "desc-alto-contraste": "Increases color contrast for better visibility",
+                "desc-alto-contraste": "Better visibility",
                 "animaciones": "Animations",
-                "desc-animaciones": "Enable or disable animations in the application",
+                "desc-animaciones": "Smooth transitions",
                 "idioma": "Language",
-                "uso-internet": "Internet Usage",
-                "datos-webapp": "Data used by the WebApp:",
+                "uso-internet": "Data Usage",
+                "datos-webapp": "Data used:",
                 "enviados": "Sent",
                 "recibidos": "Received",
-                "total-enviado": "Total sent:",
-                "total-recibido": "Total received:",
-                "reiniciar-contadores": "Reset Counters"
+                "total-enviado": "Total sent",
+                "total-recibido": "Total received",
+                "reiniciar-contadores": "Reset Counters",
+                "venta-registrada": "Sale registered successfully!",
+                "venta-eliminada": "Sale deleted",
+                "datos-reseteados": "All data has been deleted",
+                "confirmar-reset": "Are you sure? This cannot be undone.",
+                "confirmar-eliminar": "Delete this sale?",
+                "corte-generado": "PDF Report generated",
+                "error-tasa": "Could not get rate. Try manually.",
+                "observacion-guardada": "Observation auto-saved"
             }
         };
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             // Variables globales
             let ventas = JSON.parse(localStorage.getItem('ventas')) || [];
             let tasaDolar = parseFloat(localStorage.getItem('tasaDolar')) || 0;
             let datosEnviados = parseInt(localStorage.getItem('datosEnviados')) || 0;
             let datosRecibidos = parseInt(localStorage.getItem('datosRecibidos')) || 0;
-            
-            // Elementos del DOM
-            const navTabs = document.querySelectorAll('.nav-tab');
-            const tabContents = document.querySelectorAll('.tab-content');
+            let currentLang = localStorage.getItem('idioma') || 'es';
+            let observacionTimeout;
+
+            // Elementos DOM
+            const navItems = document.querySelectorAll('.nav-item-ios');
+            const tabContents = document.querySelectorAll('.tab-content-ios');
             const saleForm = document.getElementById('sale-form');
             const fechaInput = document.getElementById('fecha');
             const filtroFecha = document.getElementById('filtro-fecha');
@@ -940,290 +1399,180 @@
             const listaVentas = document.getElementById('lista-ventas');
             const filtroEstadisticas = document.getElementById('filtro-estadisticas');
             const mensajeVentas = document.getElementById('mensaje-ventas');
-            const observacionTextarea = document.getElementById('observacion');
-            const generarPdfBtn = document.getElementById('generar-pdf');
-            const resetDatosBtn = document.getElementById('reset-datos');
             const tasaDolarInput = document.getElementById('tasa-dolar');
             const actualizarTasaBtn = document.getElementById('actualizar-tasa');
-            const textoBoton = document.getElementById('texto-boton');
-            const loadingBoton = document.getElementById('loading-boton');
-            const totalDolaresElement = document.getElementById('total-dolares');
-            const infoTasaElement = document.getElementById('info-tasa');
+            const observacionTextarea = document.getElementById('observacion');
+            const autosaveIndicator = document.getElementById('autosave-indicator');
             
-            // Elementos de ajustes
-            const modoOscuroSwitch = document.getElementById('modo-oscuro');
-            const altoContrasteSwitch = document.getElementById('alto-contraste');
-            const animacionesSwitch = document.getElementById('animaciones');
-            const selectorIdioma = document.getElementById('selector-idioma');
-            const reiniciarContadoresBtn = document.getElementById('reiniciar-contadores');
-            
-            // Cargar configuraciones guardadas
-            cargarConfiguraciones();
-            
-            // Simular uso de datos (esto es solo una simulación)
-            datosRecibidos += 125; // Simular datos recibidos al cargar la página
-            guardarDatosInternet();
-            actualizarGraficoInternet();
-            
-            // Navegación entre pestañas
-            navTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const tabId = tab.getAttribute('data-tab');
-                    
-                    // Activar pestaña seleccionada
-                    navTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    // Mostrar contenido correspondiente
-                    tabContents.forEach(content => {
-                        content.classList.remove('active');
-                        if (content.id === tabId) {
-                            content.classList.add('active');
-                            
-                            // Si es la pestaña de ajustes, actualizar gráfico
-                            if (tabId === 'ajustes') {
-                                actualizarGraficoInternet();
-                            }
-                            
-                            // Si es la pestaña de estadísticas, actualizarlas
-                            if (tabId === 'estadisticas') {
-                                actualizarEstadisticas();
-                            }
-                            
-                            // Si es la pestaña de acciones, actualizar mensaje
-                            if (tabId === 'acciones') {
-                                actualizarMensajeVentas();
-                            }
-                        }
-                    });
-                });
-            });
-            
-            // Establecer fecha actual por defecto
-            const today = new Date().toISOString().split('T')[0];
-            
-            // Cargar fecha de registro desde localStorage si existe
-            const fechaRegistroGuardada = localStorage.getItem('fechaRegistro');
-            if (fechaRegistroGuardada) {
-                fechaInput.value = fechaRegistroGuardada;
-            } else {
-                fechaInput.value = today;
-            }
-            
-            // Guardar fecha de registro cuando cambie
-            fechaInput.addEventListener('change', function() {
-                localStorage.setItem('fechaRegistro', this.value);
-            });
-            
-            // Cargar fecha seleccionada del filtro desde localStorage si existe
-            const fechaFiltroGuardada = localStorage.getItem('fechaFiltro');
-            if (fechaFiltroGuardada) {
-                filtroFecha.value = fechaFiltroGuardada;
-            } else {
-                filtroFecha.value = today;
-            }
-            
-            // Cargar fecha seleccionada de estadísticas desde localStorage si existe
-            const fechaEstadisticasGuardada = localStorage.getItem('fechaEstadisticas');
-            if (fechaEstadisticasGuardada) {
-                filtroEstadisticas.value = fechaEstadisticasGuardada;
-            } else {
-                filtroEstadisticas.value = today;
-            }
-            
-            // Cargar observaciones desde localStorage si existen
-            const observacionGuardada = localStorage.getItem('observacion');
+            // ============================================
+            // CARGAR OBSERVACIÓN GUARDADA AL INICIAR
+            // ============================================
+            const observacionGuardada = localStorage.getItem('observacionSIDVA');
             if (observacionGuardada) {
                 observacionTextarea.value = observacionGuardada;
             }
-            
-            // Guardar observaciones cuando cambien
+
+            // ============================================
+            // GUARDADO AUTOMÁTICO DE OBSERVACIONES
+            // ============================================
+            function guardarObservacion() {
+                const texto = observacionTextarea.value;
+                localStorage.setItem('observacionSIDVA', texto);
+                
+                // Mostrar indicador de guardado
+                autosaveIndicator.classList.add('show');
+                
+                // Ocultar indicador después de 2 segundos
+                clearTimeout(observacionTimeout);
+                observacionTimeout = setTimeout(() => {
+                    autosaveIndicator.classList.remove('show');
+                }, 2000);
+                
+                // Mostrar toast opcionalmente (descomentar si se desea)
+                // showToast(getText('observacion-guardada'), 'success');
+            }
+
+            // Guardar al escribir (con debounce de 1 segundo)
             observacionTextarea.addEventListener('input', function() {
-                localStorage.setItem('observacion', this.value);
+                clearTimeout(observacionTimeout);
+                observacionTimeout = setTimeout(guardarObservacion, 1000);
             });
+
+            // Guardar inmediatamente al perder el foco
+            observacionTextarea.addEventListener('blur', guardarObservacion);
+
+            // Guardar antes de cerrar la página
+            window.addEventListener('beforeunload', function() {
+                guardarObservacion();
+            });
+
+            // Cargar configuraciones
+            cargarConfiguraciones();
             
-            // Cargar tasa de dólar desde localStorage si existe
+            // Simular datos iniciales
+            datosRecibidos += 125;
+            guardarDatosInternet();
+            actualizarGraficoInternet();
+
+            // Navegación con animación
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tabId = item.getAttribute('data-tab');
+                    
+                    // Guardar observación antes de cambiar de tab
+                    guardarObservacion();
+                    
+                    // Animar salida
+                    tabContents.forEach(content => {
+                        if (content.classList.contains('active')) {
+                            content.style.animation = 'fadeOut 0.2s ease-in';
+                        }
+                    });
+                    
+                    setTimeout(() => {
+                        // Actualizar navegación
+                        navItems.forEach(nav => nav.classList.remove('active'));
+                        item.classList.add('active');
+                        
+                        // Cambiar contenido
+                        tabContents.forEach(content => {
+                            content.classList.remove('active');
+                            content.style.animation = '';
+                            if (content.id === tabId) {
+                                content.classList.add('active');
+                                
+                                if (tabId === 'ajustes') actualizarGraficoInternet();
+                                if (tabId === 'estadisticas') actualizarEstadisticas();
+                                if (tabId === 'acciones') actualizarMensajeVentas();
+                            }
+                        });
+                    }, 200);
+                });
+            });
+
+            // Animación de salida
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    from { opacity: 1; transform: translateY(0); }
+                    to { opacity: 0; transform: translateY(-10px); }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Fecha actual
+            const today = new Date().toISOString().split('T')[0];
+            fechaInput.value = localStorage.getItem('fechaRegistro') || today;
+            filtroFecha.value = localStorage.getItem('fechaFiltro') || today;
+            filtroEstadisticas.value = localStorage.getItem('fechaEstadisticas') || today;
+            
             if (tasaDolar) {
                 tasaDolarInput.value = tasaDolar;
-                infoTasaElement.textContent = `Tasa: ${tasaDolar.toFixed(2)} Bs/$`;
+                document.getElementById('info-tasa').textContent = `Tasa: ${tasaDolar.toFixed(2)} Bs/$`;
             } else {
-                // Si no hay tasa guardada, intentar obtenerla automáticamente
                 obtenerTasaDolar();
             }
+
+            // Event Listeners
+            fechaInput.addEventListener('change', function() {
+                localStorage.setItem('fechaRegistro', this.value);
+            });
+
+            filtroFecha.addEventListener('change', function() {
+                localStorage.setItem('fechaFiltro', this.value);
+                actualizarListaVentas();
+            });
+
+            buscarNombre.addEventListener('input', actualizarListaVentas);
             
-            // Guardar tasa de dólar cuando cambie manualmente
+            filtroEstadisticas.addEventListener('change', function() {
+                localStorage.setItem('fechaEstadisticas', this.value);
+                actualizarEstadisticas();
+            });
+
             tasaDolarInput.addEventListener('change', function() {
                 tasaDolar = parseFloat(this.value) || 0;
                 localStorage.setItem('tasaDolar', tasaDolar);
-                infoTasaElement.textContent = `Tasa: ${tasaDolar.toFixed(2)} Bs/$`;
+                document.getElementById('info-tasa').textContent = `Tasa: ${tasaDolar.toFixed(2)} Bs/$`;
                 actualizarEstadisticas();
             });
-            
-            // Actualizar tasa de dólar
-            actualizarTasaBtn.addEventListener('click', function() {
-                obtenerTasaDolar();
-            });
-            
-            // Event listeners para ajustes
-            modoOscuroSwitch.addEventListener('change', function() {
+
+            actualizarTasaBtn.addEventListener('click', obtenerTasaDolar);
+
+            // Configuración switches
+            document.getElementById('modo-oscuro').addEventListener('change', function() {
                 guardarConfiguracion('modoOscuro', this.checked);
                 aplicarConfiguraciones();
             });
-            
-            altoContrasteSwitch.addEventListener('change', function() {
+
+            document.getElementById('alto-contraste').addEventListener('change', function() {
                 guardarConfiguracion('altoContraste', this.checked);
                 aplicarConfiguraciones();
             });
-            
-            animacionesSwitch.addEventListener('change', function() {
+
+            document.getElementById('animaciones').addEventListener('change', function() {
                 guardarConfiguracion('animaciones', this.checked);
                 aplicarConfiguraciones();
             });
-            
-            selectorIdioma.addEventListener('change', function() {
-                const idioma = this.value;
-                guardarConfiguracion('idioma', idioma);
-                cambiarIdioma(idioma);
+
+            document.getElementById('selector-idioma').addEventListener('change', function() {
+                currentLang = this.value;
+                guardarConfiguracion('idioma', currentLang);
+                cambiarIdioma(currentLang);
             });
-            
-            reiniciarContadoresBtn.addEventListener('click', function() {
-                if (confirm(selectorIdioma.value === 'es' ? 
-                    '¿Estás seguro de que quieres reiniciar los contadores de internet?' : 
-                    'Are you sure you want to reset internet counters?')) {
+
+            document.getElementById('reiniciar-contadores').addEventListener('click', function() {
+                if (confirm(getText('confirmar-reset'))) {
                     datosEnviados = 0;
-                    datosRecibidos = 125; // Valor mínimo por defecto
+                    datosRecibidos = 125;
                     guardarDatosInternet();
                     actualizarGraficoInternet();
+                    showToast(getText('datos-reseteados'));
                 }
             });
-            
-            // Función para obtener la tasa del dólar desde una API
-            function obtenerTasaDolar() {
-                textoBoton.style.display = 'none';
-                loadingBoton.style.display = 'inline-block';
-                
-                // Simular envío de datos
-                datosEnviados += 2; // 2KB por la solicitud
-                guardarDatosInternet();
-                
-                // Usamos una API pública para obtener la tasa del dólar
-                fetch('https://api.exchangerate-api.com/v4/latest/USD')
-                    .then(response => {
-                        // Simular recepción de datos
-                        datosRecibidos += 5; // 5KB por la respuesta
-                        guardarDatosInternet();
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Para Venezuela, usamos VES (Bolívar soberano)
-                        const tasaUSD = data.rates.VES || 36.00; // Valor por defecto si no encuentra
-                        
-                        tasaDolar = tasaUSD;
-                        tasaDolarInput.value = tasaUSD.toFixed(2);
-                        localStorage.setItem('tasaDolar', tasaUSD);
-                        infoTasaElement.textContent = `Tasa: ${tasaUSD.toFixed(2)} Bs/$`;
-                        actualizarEstadisticas();
-                        
-                        textoBoton.style.display = 'inline';
-                        loadingBoton.style.display = 'none';
-                    })
-                    .catch(error => {
-                        console.error('Error al obtener la tasa de dólar:', error);
-                        alert(selectorIdioma.value === 'es' ? 
-                            'No se pudo obtener la tasa automáticamente. Por favor, ingrésala manualmente.' : 
-                            'Could not get rate automatically. Please enter it manually.');
-                        
-                        textoBoton.style.display = 'inline';
-                        loadingBoton.style.display = 'none';
-                    });
-            }
-            
-            // Funciones de configuración
-            function cargarConfiguraciones() {
-                // Cargar modo oscuro
-                const modoOscuro = localStorage.getItem('modoOscuro') === 'true';
-                modoOscuroSwitch.checked = modoOscuro;
-                
-                // Cargar alto contraste
-                const altoContraste = localStorage.getItem('altoContraste') === 'true';
-                altoContrasteSwitch.checked = altoContraste;
-                
-                // Cargar animaciones
-                const animaciones = localStorage.getItem('animaciones') !== 'false'; // Por defecto activadas
-                animacionesSwitch.checked = animaciones;
-                
-                // Cargar idioma
-                const idioma = localStorage.getItem('idioma') || 'es';
-                selectorIdioma.value = idioma;
-                cambiarIdioma(idioma);
-                
-                // Aplicar configuraciones
-                aplicarConfiguraciones();
-            }
-            
-            function aplicarConfiguraciones() {
-                // Aplicar modo oscuro
-                if (modoOscuroSwitch.checked) {
-                    document.body.classList.add('dark-mode');
-                } else {
-                    document.body.classList.remove('dark-mode');
-                }
-                
-                // Aplicar alto contraste
-                if (altoContrasteSwitch.checked) {
-                    document.body.classList.add('high-contrast');
-                } else {
-                    document.body.classList.remove('high-contrast');
-                }
-                
-                // Aplicar animaciones
-                if (animacionesSwitch.checked) {
-                    document.body.classList.remove('no-animation');
-                } else {
-                    document.body.classList.add('no-animation');
-                }
-            }
-            
-            function guardarConfiguracion(clave, valor) {
-                localStorage.setItem(clave, valor);
-            }
-            
-            function guardarDatosInternet() {
-                localStorage.setItem('datosEnviados', datosEnviados);
-                localStorage.setItem('datosRecibidos', datosRecibidos);
-            }
-            
-            function actualizarGraficoInternet() {
-                // Actualizar gráfico
-                const maxHeight = 120; // Altura máxima en píxeles
-                const maxValue = Math.max(datosEnviados, datosRecibidos, 1);
-                
-                document.getElementById('barra-enviados').style.height = (datosEnviados / maxValue * maxHeight) + 'px';
-                document.getElementById('barra-recibidos').style.height = (datosRecibidos / maxValue * maxHeight) + 'px';
-                
-                // Actualizar texto
-                document.getElementById('total-enviado').textContent = datosEnviados + ' KB';
-                document.getElementById('total-recibido').textContent = datosRecibidos + ' KB';
-            }
-            
-            function cambiarIdioma(idioma) {
-                // Actualizar todos los elementos con atributo data-i18n
-                document.querySelectorAll('[data-i18n]').forEach(element => {
-                    const key = element.getAttribute('data-i18n');
-                    if (translations[idioma][key]) {
-                        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                            element.placeholder = translations[idioma][key];
-                        } else {
-                            element.textContent = translations[idioma][key];
-                        }
-                    }
-                });
-                
-                // Actualizar mensajes específicos
-                infoTasaElement.textContent = (idioma === 'es' ? 'Tasa: ' : 'Rate: ') + tasaDolar.toFixed(2) + (idioma === 'es' ? ' Bs/$' : ' Bs/$');
-            }
-            
-            // Registrar nueva venta
+
+            // Formulario de venta
             saleForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -1235,169 +1584,272 @@
                     cantidad: parseInt(document.getElementById('cantidad').value),
                     litros: parseInt(document.getElementById('litros').value),
                     monto: parseFloat(document.getElementById('monto').value),
-                    estado: 'pendiente' // Estado por defecto
+                    estado: 'pendiente'
                 };
                 
                 ventas.push(nuevaVenta);
                 guardarVentas();
                 actualizarListaVentas();
                 
-                // Simular envío de datos
-                datosEnviados += 1; // 1KB por registrar venta
+                datosEnviados += 1;
                 guardarDatosInternet();
                 
-                // Limpiar formulario pero mantener la fecha seleccionada
+                // Limpiar formulario
                 document.getElementById('comprador').value = '';
                 document.getElementById('metodo-pago').value = '';
                 document.getElementById('cantidad').value = '';
                 document.getElementById('monto').value = '';
-                // Mantener la fecha y litros como están
                 
-                // Mostrar mensaje de éxito
-                alert(selectorIdioma.value === 'es' ? 
-                    'Venta registrada exitosamente!' : 
-                    'Sale registered successfully!');
+                showToast(getText('venta-registrada'), 'success');
+                
+                // Vibración táctil si está disponible
+                if (navigator.vibrate) navigator.vibrate(50);
             });
-            
-            // Filtrar ventas por fecha
-            filtroFecha.addEventListener('change', function() {
-                localStorage.setItem('fechaFiltro', this.value);
-                actualizarListaVentas();
-            });
-            
-            // Buscar ventas por nombre
-            buscarNombre.addEventListener('input', actualizarListaVentas);
-            
-            // Filtrar estadísticas por fecha
-            filtroEstadisticas.addEventListener('change', function() {
-                localStorage.setItem('fechaEstadisticas', this.value);
-                actualizarEstadisticas();
-            });
-            
+
             // Generar PDF
-            generarPdfBtn.addEventListener('click', function() {
-                // Simular envío de datos
-                datosEnviados += 3; // 3KB por generar PDF
+            document.getElementById('generar-pdf').addEventListener('click', function() {
+                datosEnviados += 3;
                 guardarDatosInternet();
                 generarPDF();
             });
-            
+
             // Resetear datos
-            resetDatosBtn.addEventListener('click', function() {
-                if (confirm(selectorIdioma.value === 'es' ? 
-                    '¿Estás seguro de que quieres eliminar todos los datos? Esta acción no se puede deshacer.' : 
-                    'Are you sure you want to delete all data? This action cannot be undone.')) {
+            document.getElementById('reset-datos').addEventListener('click', function() {
+                if (confirm(getText('confirmar-reset'))) {
                     ventas = [];
                     localStorage.removeItem('fechaRegistro');
                     localStorage.removeItem('fechaFiltro');
                     localStorage.removeItem('fechaEstadisticas');
-                    localStorage.removeItem('observacion');
+                    // ============================================
+                    // ELIMINAR OBSERVACIÓN AL RESETAR DATOS
+                    // ============================================
+                    localStorage.removeItem('observacionSIDVA');
+                    observacionTextarea.value = '';
+                    
                     guardarVentas();
                     fechaInput.value = today;
-                    observacionTextarea.value = '';
                     actualizarListaVentas();
                     actualizarEstadisticas();
                     actualizarMensajeVentas();
-                    alert(selectorIdioma.value === 'es' ? 
-                        'Todos los datos han sido eliminados.' : 
-                        'All data has been deleted.');
+                    showToast(getText('datos-reseteados'), 'danger');
                 }
             });
-            
-            // Funciones auxiliares
+
+            // Funciones
+            function getText(key) {
+                return translations[currentLang][key] || key;
+            }
+
+            function showToast(message, type = 'info') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = 'toast-ios';
+                
+                const icons = {
+                    success: 'bi-check-circle-fill',
+                    danger: 'bi-x-circle-fill',
+                    warning: 'bi-exclamation-triangle-fill',
+                    info: 'bi-info-circle-fill'
+                };
+                
+                const colors = {
+                    success: '#34C759',
+                    danger: '#FF3B30',
+                    warning: '#FF9500',
+                    info: '#007AFF'
+                };
+                
+                toast.innerHTML = `
+                    <i class="bi ${icons[type]}" style="color: ${colors[type]}"></i>
+                    <span>${message}</span>
+                `;
+                
+                container.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.animation = 'fadeOut 0.3s ease-in forwards';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            function obtenerTasaDolar() {
+                const textoBoton = document.getElementById('texto-boton');
+                const loadingBoton = document.getElementById('loading-boton');
+                
+                textoBoton.style.display = 'none';
+                loadingBoton.style.display = 'inline-block';
+                
+                datosEnviados += 2;
+                guardarDatosInternet();
+                
+                fetch('https://api.exchangerate-api.com/v4/latest/USD')
+                    .then(response => {
+                        datosRecibidos += 5;
+                        guardarDatosInternet();
+                        return response.json();
+                    })
+                    .then(data => {
+                        const tasaUSD = data.rates.VES || 36.00;
+                        tasaDolar = tasaUSD;
+                        tasaDolarInput.value = tasaUSD.toFixed(2);
+                        localStorage.setItem('tasaDolar', tasaUSD);
+                        document.getElementById('info-tasa').textContent = `Tasa: ${tasaUSD.toFixed(2)} Bs/$`;
+                        actualizarEstadisticas();
+                        
+                        textoBoton.style.display = 'inline';
+                        loadingBoton.style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showToast(getText('error-tasa'), 'warning');
+                        textoBoton.style.display = 'inline';
+                        loadingBoton.style.display = 'none';
+                    });
+            }
+
+            function cargarConfiguraciones() {
+                const modoOscuro = localStorage.getItem('modoOscuro') === 'true';
+                const altoContraste = localStorage.getItem('altoContraste') === 'true';
+                const animaciones = localStorage.getItem('animaciones') !== 'false';
+                
+                document.getElementById('modo-oscuro').checked = modoOscuro;
+                document.getElementById('alto-contraste').checked = altoContraste;
+                document.getElementById('animaciones').checked = animaciones;
+                document.getElementById('selector-idioma').value = currentLang;
+                
+                aplicarConfiguraciones();
+                cambiarIdioma(currentLang);
+            }
+
+            function aplicarConfiguraciones() {
+                const modoOscuro = document.getElementById('modo-oscuro').checked;
+                const altoContraste = document.getElementById('alto-contraste').checked;
+                const animaciones = document.getElementById('animaciones').checked;
+                
+                document.body.classList.toggle('dark-mode', modoOscuro);
+                document.body.classList.toggle('high-contrast', altoContraste);
+                document.body.classList.toggle('no-animation', !animaciones);
+            }
+
+            function guardarConfiguracion(clave, valor) {
+                localStorage.setItem(clave, valor);
+            }
+
+            function guardarDatosInternet() {
+                localStorage.setItem('datosEnviados', datosEnviados);
+                localStorage.setItem('datosRecibidos', datosRecibidos);
+            }
+
+            function actualizarGraficoInternet() {
+                const maxHeight = 100;
+                const maxValue = Math.max(datosEnviados, datosRecibidos, 1);
+                
+                const barraEnviados = document.getElementById('barra-enviados');
+                const barraRecibidos = document.getElementById('barra-recibidos');
+                
+                barraEnviados.style.height = (datosEnviados / maxValue * maxHeight) + 'px';
+                barraEnviados.setAttribute('data-value', datosEnviados + ' KB');
+                
+                barraRecibidos.style.height = (datosRecibidos / maxValue * maxHeight) + 'px';
+                barraRecibidos.setAttribute('data-value', datosRecibidos + ' KB');
+                
+                document.getElementById('total-enviado').textContent = datosEnviados + ' KB';
+                document.getElementById('total-recibido').textContent = datosRecibidos + ' KB';
+            }
+
+            function cambiarIdioma(idioma) {
+                currentLang = idioma;
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (translations[idioma][key]) {
+                        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                            element.placeholder = translations[idioma][key];
+                        } else {
+                            element.textContent = translations[idioma][key];
+                        }
+                    }
+                });
+            }
+
             function guardarVentas() {
                 localStorage.setItem('ventas', JSON.stringify(ventas));
+                document.getElementById('contador-ventas').textContent = ventas.length;
             }
-            
+
             function actualizarListaVentas() {
                 const fechaFiltro = filtroFecha.value;
                 const nombreFiltro = buscarNombre.value.toLowerCase();
                 
-                // Filtrar ventas
                 const ventasFiltradas = ventas.filter(venta => {
                     const coincideFecha = fechaFiltro ? venta.fecha === fechaFiltro : true;
                     const coincideNombre = nombreFiltro ? venta.comprador.toLowerCase().includes(nombreFiltro) : true;
                     return coincideFecha && coincideNombre;
                 });
                 
-                // Mostrar ventas
                 listaVentas.innerHTML = '';
                 
                 if (ventasFiltradas.length === 0) {
-                    listaVentas.innerHTML = '<p>' + (selectorIdioma.value === 'es' ? 
-                        'No hay ventas registradas para los filtros seleccionados.' : 
-                        'No registered sales for selected filters.') + '</p>';
+                    listaVentas.innerHTML = `
+                        <div class="empty-state">
+                            <i class="bi bi-inbox"></i>
+                            <p class="mb-0">${getText('no-ventas')}</p>
+                        </div>
+                    `;
                     return;
                 }
                 
-                ventasFiltradas.forEach(venta => {
+                ventasFiltradas.forEach((venta, index) => {
                     const ventaElement = document.createElement('div');
-                    ventaElement.classList.add('sale-item');
+                    ventaElement.className = 'sale-item-ios';
+                    ventaElement.style.animationDelay = `${index * 0.05}s`;
+                    
+                    const metodoIcon = venta.metodoPago === 'efectivo' ? 'bi-cash-coin' : 'bi-phone';
+                    const metodoText = venta.metodoPago === 'efectivo' ? 'Efectivo' : 'Pago Móvil';
+                    const estadoClass = venta.estado === 'pagado' ? 'badge-paid' : 'badge-pending';
+                    const estadoText = venta.estado === 'pagado' ? 'Pagado' : 'Pendiente';
                     
                     ventaElement.innerHTML = `
-                        <div class="sale-info">
-                            <strong>${venta.comprador}</strong> - ${venta.cantidad} ` + 
-                            (selectorIdioma.value === 'es' ? 'botellones' : 'bottles') + `
-                            <div>${venta.fecha} - ${venta.metodoPago === 'efectivo' ? 
-                            (selectorIdioma.value === 'es' ? '💵 Efectivo' : '💵 Cash') : 
-                            (selectorIdioma.value === 'es' ? '📲 Pago Móvil' : '📲 Mobile Payment')} - ${venta.monto} Bs</div>
+                        <div class="sale-info-ios">
+                            <div class="sale-title-ios">${venta.comprador}</div>
+                            <div class="sale-details-ios">
+                                <span><i class="bi bi-calendar3"></i> ${venta.fecha}</span>
+                                <span><i class="bi bi-${metodoIcon}"></i> ${metodoText}</span>
+                                <span class="sale-badge ${estadoClass}">${estadoText}</span>
+                            </div>
+                            <div class="mt-1 fw-bold text-primary">${venta.cantidad} botellones - ${venta.monto} Bs</div>
                         </div>
-                        <div class="sale-actions">
-                            <button class="action-btn toggle-status ${venta.estado === 'pagado' ? 'btn-success' : 'btn-warning'}" data-id="${venta.id}">
-                                ${venta.estado === 'pagado' ? '✅ ' + (selectorIdioma.value === 'es' ? 'Pagado' : 'Paid') : 
-                                '⏳ ' + (selectorIdioma.value === 'es' ? 'Pendiente' : 'Pending')}
+                        <div class="sale-actions-ios">
+                            <button class="btn-icon-ios btn-success-ios" onclick="toggleEstadoVenta(${venta.id})" title="Cambiar estado">
+                                <i class="bi bi-check-lg"></i>
                             </button>
-                            <button class="action-btn btn-edit edit-sale" data-id="${venta.id}">✏️ ${selectorIdioma.value === 'es' ? 'Editar' : 'Edit'}</button>
-                            <button class="action-btn btn-danger delete-sale" data-id="${venta.id}">🗑️ ${selectorIdioma.value === 'es' ? 'Eliminar' : 'Delete'}</button>
+                            <button class="btn-icon-ios btn-warning-ios" onclick="editarVenta(${venta.id})" title="Editar">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn-icon-ios btn-danger-ios" onclick="eliminarVenta(${venta.id})" title="Eliminar">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
                         </div>
                     `;
                     
                     listaVentas.appendChild(ventaElement);
                 });
-                
-                // Agregar event listeners para cambiar estado
-                document.querySelectorAll('.toggle-status').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const id = parseInt(this.getAttribute('data-id'));
-                        toggleEstadoVenta(id);
-                    });
-                });
-                
-                // Agregar event listeners para editar venta
-                document.querySelectorAll('.edit-sale').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const id = parseInt(this.getAttribute('data-id'));
-                        editarVenta(id);
-                    });
-                });
-                
-                // Agregar event listeners para eliminar ventas
-                document.querySelectorAll('.delete-sale').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const id = parseInt(this.getAttribute('data-id'));
-                        eliminarVenta(id);
-                    });
-                });
             }
-            
-            function toggleEstadoVenta(id) {
+
+            window.toggleEstadoVenta = function(id) {
                 ventas = ventas.map(venta => {
                     if (venta.id === id) {
                         venta.estado = venta.estado === 'pagado' ? 'pendiente' : 'pagado';
                     }
                     return venta;
                 });
-                
                 guardarVentas();
                 actualizarListaVentas();
                 actualizarEstadisticas();
-            }
-            
-            function editarVenta(id) {
-                // Buscar la venta por ID
+            };
+
+            window.editarVenta = function(id) {
                 const venta = ventas.find(v => v.id === id);
                 if (venta) {
-                    // Llenar el formulario con los datos de la venta
                     document.getElementById('fecha').value = venta.fecha;
                     document.getElementById('comprador').value = venta.comprador;
                     document.getElementById('metodo-pago').value = venta.metodoPago;
@@ -1405,37 +1857,32 @@
                     document.getElementById('litros').value = venta.litros;
                     document.getElementById('monto').value = venta.monto;
                     
-                    // Eliminar la venta actual para reemplazarla después de editar
                     ventas = ventas.filter(v => v.id !== id);
                     guardarVentas();
                     actualizarListaVentas();
                     actualizarEstadisticas();
                     
-                    alert(selectorIdioma.value === 'es' ? 
-                        'Venta cargada para edición. Complete los cambios y registre nuevamente.' : 
-                        'Sale loaded for editing. Complete the changes and register again.');
+                    // Cambiar a tab de registro
+                    document.querySelector('[data-tab="registro"]').click();
+                    showToast('Editando venta...', 'info');
                 }
-            }
-            
-            function eliminarVenta(id) {
-                if (confirm(selectorIdioma.value === 'es' ? 
-                    '¿Estás seguro de que quieres eliminar esta venta?' : 
-                    'Are you sure you want to delete this sale?')) {
+            };
+
+            window.eliminarVenta = function(id) {
+                if (confirm(getText('confirmar-eliminar'))) {
                     ventas = ventas.filter(venta => venta.id !== id);
                     guardarVentas();
                     actualizarListaVentas();
                     actualizarEstadisticas();
                     actualizarMensajeVentas();
+                    showToast(getText('venta-eliminada'), 'danger');
                 }
-            }
-            
+            };
+
             function actualizarEstadisticas() {
                 const fechaFiltro = filtroEstadisticas.value;
-                
-                // Filtrar ventas por fecha
                 const ventasFiltradas = fechaFiltro ? ventas.filter(venta => venta.fecha === fechaFiltro) : ventas;
                 
-                // Calcular estadísticas
                 const totalBotellones = ventasFiltradas.reduce((sum, venta) => sum + venta.cantidad, 0);
                 const botellonesPendientes = ventasFiltradas
                     .filter(venta => venta.estado === 'pendiente')
@@ -1448,69 +1895,84 @@
                     .filter(venta => venta.metodoPago === 'movil')
                     .reduce((sum, venta) => sum + venta.monto, 0);
                 const totalGeneral = totalEfectivo + totalMovil;
-                
-                // Calcular total en dólares
                 const totalDolares = tasaDolar > 0 ? (totalGeneral / tasaDolar) : 0;
                 
-                // Actualizar UI
-                document.getElementById('total-botellones').textContent = totalBotellones;
-                document.getElementById('botellones-pendientes').textContent = botellonesPendientes;
-                document.getElementById('litros-vendidos').textContent = litrosVendidos;
-                document.getElementById('total-efectivo').textContent = totalEfectivo.toFixed(2) + ' Bs';
-                document.getElementById('total-movil').textContent = totalMovil.toFixed(2) + ' Bs';
-                document.getElementById('total-general').textContent = totalGeneral.toFixed(2) + ' Bs';
-                totalDolaresElement.textContent = totalDolares.toFixed(2) + ' $';
+                // Animar números
+                animateValue('total-botellones', parseInt(document.getElementById('total-botellones').textContent), totalBotellones, 500);
+                animateValue('botellones-pendientes', parseInt(document.getElementById('botellones-pendientes').textContent), botellonesPendientes, 500);
+                animateValue('litros-vendidos', parseInt(document.getElementById('litros-vendidos').textContent), litrosVendidos, 500);
                 
-                // Actualizar mensaje de ventas
+                document.getElementById('total-efectivo').textContent = totalEfectivo.toFixed(2);
+                document.getElementById('total-movil').textContent = totalMovil.toFixed(2);
+                document.getElementById('total-general').textContent = totalGeneral.toFixed(2);
+                document.getElementById('total-dolares').textContent = '$' + totalDolares.toFixed(2);
+                
                 actualizarMensajeVentas();
             }
-            
+
+            function animateValue(id, start, end, duration) {
+                if (start === end) return;
+                const range = end - start;
+                const increment = end > start ? 1 : -1;
+                const stepTime = Math.abs(Math.floor(duration / range));
+                const obj = document.getElementById(id);
+                
+                let current = start;
+                const timer = setInterval(() => {
+                    current += increment;
+                    obj.textContent = current;
+                    if (current === end) {
+                        clearInterval(timer);
+                    }
+                }, Math.max(stepTime, 10));
+            }
+
             function actualizarMensajeVentas() {
                 const fechaFiltro = filtroEstadisticas.value;
                 const ventasFiltradas = fechaFiltro ? ventas.filter(venta => venta.fecha === fechaFiltro) : ventas;
                 const totalBotellones = ventasFiltradas.reduce((sum, venta) => sum + venta.cantidad, 0);
                 
-                mensajeVentas.className = 'message-container';
+                mensajeVentas.className = 'message-ios';
                 
-                if (selectorIdioma.value === 'es') {
+                if (currentLang === 'es') {
                     if (totalBotellones >= 17) {
-                        mensajeVentas.textContent = '¡🚀Día alto en ventas🔥!';
-                        mensajeVentas.classList.add('high-sales');
+                        mensajeVentas.innerHTML = '<i class="bi bi-rocket-takeoff-fill me-2"></i> ¡Día alto en ventas! 🚀';
+                        mensajeVentas.classList.add('message-high');
                     } else if (totalBotellones >= 10) {
-                        mensajeVentas.textContent = '🫢Día mediano en ventas🫣';
-                        mensajeVentas.classList.add('medium-sales');
-                    } else if (totalBotellones < 5) {
-                        mensajeVentas.textContent = '😢Día bajo en ventas🤦🏽';
-                        mensajeVentas.classList.add('low-sales');
+                        mensajeVentas.innerHTML = '<i class="bi bi-graph-up-arrow me-2"></i> Día mediano en ventas 📈';
+                        mensajeVentas.classList.add('message-medium');
+                    } else if (totalBotellones < 5 && totalBotellones > 0) {
+                        mensajeVentas.innerHTML = '<i class="bi bi-emoji-frown-fill me-2"></i> Día bajo en ventas 😢';
+                        mensajeVentas.classList.add('message-low');
                     } else {
-                        mensajeVentas.textContent = '🙌🏽Ventas regulares🤷🏽';
-                        mensajeVentas.classList.add('medium-sales');
+                        mensajeVentas.innerHTML = '<i class="bi bi-emoji-neutral-fill me-2"></i> Sin ventas registradas hoy';
+                        mensajeVentas.classList.add('message-medium');
                     }
                 } else {
                     if (totalBotellones >= 17) {
-                        mensajeVentas.textContent = 'High sales day!';
-                        mensajeVentas.classList.add('high-sales');
+                        mensajeVentas.innerHTML = '<i class="bi bi-rocket-takeoff-fill me-2"></i> High sales day! 🚀';
+                        mensajeVentas.classList.add('message-high');
                     } else if (totalBotellones >= 10) {
-                        mensajeVentas.textContent = 'Medium sales day';
-                        mensajeVentas.classList.add('medium-sales');
-                    } else if (totalBotellones < 5) {
-                        mensajeVentas.textContent = 'Low sales day';
-                        mensajeVentas.classList.add('low-sales');
+                        mensajeVentas.innerHTML = '<i class="bi bi-graph-up-arrow me-2"></i> Medium sales day 📈';
+                        mensajeVentas.classList.add('message-medium');
+                    } else if (totalBotellones < 5 && totalBotellones > 0) {
+                        mensajeVentas.innerHTML = '<i class="bi bi-emoji-frown-fill me-2"></i> Low sales day 😢';
+                        mensajeVentas.classList.add('message-low');
                     } else {
-                        mensajeVentas.textContent = 'Regular sales';
-                        mensajeVentas.classList.add('medium-sales');
+                        mensajeVentas.innerHTML = '<i class="bi bi-emoji-neutral-fill me-2"></i> No sales today';
+                        mensajeVentas.classList.add('message-medium');
                     }
                 }
             }
-            
+
             function generarPDF() {
                 const fechaFiltro = filtroEstadisticas.value;
-                const observacion = observacionTextarea.value;
-                
-                // Filtrar ventas por fecha
+                // ============================================
+                // OBTENER OBSERVACIÓN DESDE LOCALSTORAGE
+                // ============================================
+                const observacion = localStorage.getItem('observacionSIDVA') || '';
                 const ventasFiltradas = fechaFiltro ? ventas.filter(venta => venta.fecha === fechaFiltro) : ventas;
                 
-                // Calcular estadísticas para el PDF
                 const totalBotellones = ventasFiltradas.reduce((sum, venta) => sum + venta.cantidad, 0);
                 const litrosVendidos = ventasFiltradas.reduce((sum, venta) => sum + (venta.cantidad * venta.litros), 0);
                 const totalEfectivo = ventasFiltradas
@@ -1522,74 +1984,68 @@
                 const totalGeneral = totalEfectivo + totalMovil;
                 const totalDolares = tasaDolar > 0 ? (totalGeneral / tasaDolar) : 0;
                 
-                // Crear PDF
                 const doc = new jsPDF();
                 
-                // Título
                 doc.setFontSize(20);
-                doc.text(selectorIdioma.value === 'es' ? 'Corte del Día' : 'Daily Report', 105, 15, { align: 'center' });
+                doc.text(currentLang === 'es' ? 'Corte del Día' : 'Daily Report', 105, 15, { align: 'center' });
                 doc.setFontSize(12);
-                doc.text(`${selectorIdioma.value === 'es' ? 'Fecha' : 'Date'}: ${fechaFiltro || (selectorIdioma.value === 'es' ? 'Todas las fechas' : 'All dates')}`, 105, 22, { align: 'center' });
+                doc.text(`${currentLang === 'es' ? 'Fecha' : 'Date'}: ${fechaFiltro || (currentLang === 'es' ? 'Todas las fechas' : 'All dates')}`, 105, 22, { align: 'center' });
                 
-                // Observación
                 if (observacion) {
                     doc.setFontSize(11);
-                    const splitObservation = doc.splitTextToSize(`${selectorIdioma.value === 'es' ? 'Observación' : 'Observation'}: ${observacion}`, 180);
+                    const splitObservation = doc.splitTextToSize(`${currentLang === 'es' ? 'Observación' : 'Observation'}: ${observacion}`, 180);
                     doc.text(splitObservation, 15, 35);
                 }
                 
-                // Tasa de cambio
                 doc.setFontSize(10);
-                doc.text(`${selectorIdioma.value === 'es' ? 'Tasa de cambio' : 'Exchange rate'}: ${tasaDolar.toFixed(2)} Bs/$`, 15, observacion ? 50 : 40);
+                doc.text(`${currentLang === 'es' ? 'Tasa de cambio' : 'Exchange rate'}: ${tasaDolar.toFixed(2)} Bs/$`, 15, observacion ? 50 : 40);
                 
-                // Estadísticas
                 doc.autoTable({
                     startY: observacion ? 60 : 50,
-                    head: [[selectorIdioma.value === 'es' ? 'Estadística' : 'Statistic', selectorIdioma.value === 'es' ? 'Valor' : 'Value']],
+                    head: [[currentLang === 'es' ? 'Estadística' : 'Statistic', currentLang === 'es' ? 'Valor' : 'Value']],
                     body: [
-                        [selectorIdioma.value === 'es' ? 'Total Botellones Vendidos' : 'Total Bottles Sold', totalBotellones],
-                        [selectorIdioma.value === 'es' ? 'Litros Vendidos' : 'Liters Sold', litrosVendidos],
-                        [selectorIdioma.value === 'es' ? 'Monto en Efectivo' : 'Cash Amount', `${totalEfectivo.toFixed(2)} Bs`],
-                        [selectorIdioma.value === 'es' ? 'Monto en Pago Móvil' : 'Mobile Payment Amount', `${totalMovil.toFixed(2)} Bs`],
-                        [selectorIdioma.value === 'es' ? 'Total General' : 'Total General', `${totalGeneral.toFixed(2)} Bs`],
-                        [selectorIdioma.value === 'es' ? 'Total en Dólares' : 'Total in Dollars', `$${totalDolares.toFixed(2)}`]
+                        [currentLang === 'es' ? 'Total Botellones' : 'Total Bottles', totalBotellones],
+                        [currentLang === 'es' ? 'Litros Vendidos' : 'Liters Sold', litrosVendidos],
+                        [currentLang === 'es' ? 'Efectivo' : 'Cash', `${totalEfectivo.toFixed(2)} Bs`],
+                        [currentLang === 'es' ? 'Pago Móvil' : 'Mobile Payment', `${totalMovil.toFixed(2)} Bs`],
+                        [currentLang === 'es' ? 'Total General' : 'Total General', `${totalGeneral.toFixed(2)} Bs`],
+                        [currentLang === 'es' ? 'Total en $' : 'Total in $', `$${totalDolares.toFixed(2)}`]
                     ],
                     theme: 'grid',
-                    headStyles: { fillColor: [52, 152, 219] }
+                    headStyles: { fillColor: [0, 122, 255] }
                 });
                 
-                // Detalle de ventas
                 if (ventasFiltradas.length > 0) {
                     const ventasTable = ventasFiltradas.map(venta => [
                         venta.fecha,
                         venta.comprador,
                         venta.cantidad,
                         `${venta.monto} Bs`,
-                        venta.metodoPago === 'efectivo' ? (selectorIdioma.value === 'es' ? 'Efectivo' : 'Cash') : (selectorIdioma.value === 'es' ? 'Pago Móvil' : 'Mobile Payment'),
-                        venta.estado === 'pagado' ? (selectorIdioma.value === 'es' ? 'Pagado' : 'Paid') : (selectorIdioma.value === 'es' ? 'Pendiente' : 'Pending')
+                        venta.metodoPago === 'efectivo' ? (currentLang === 'es' ? 'Efectivo' : 'Cash') : (currentLang === 'es' ? 'Pago Móvil' : 'Mobile'),
+                        venta.estado === 'pagado' ? (currentLang === 'es' ? 'Pagado' : 'Paid') : (currentLang === 'es' ? 'Pendiente' : 'Pending')
                     ]);
                     
                     doc.autoTable({
                         startY: doc.lastAutoTable.finalY + 15,
                         head: [
-                            [selectorIdioma.value === 'es' ? 'Fecha' : 'Date', 
-                             selectorIdioma.value === 'es' ? 'Comprador' : 'Buyer', 
-                             selectorIdioma.value === 'es' ? 'Cantidad' : 'Quantity', 
-                             selectorIdioma.value === 'es' ? 'Monto' : 'Amount', 
-                             selectorIdioma.value === 'es' ? 'Método Pago' : 'Payment Method', 
-                             selectorIdioma.value === 'es' ? 'Estado' : 'Status']
+                            [currentLang === 'es' ? 'Fecha' : 'Date', 
+                             currentLang === 'es' ? 'Comprador' : 'Buyer', 
+                             currentLang === 'es' ? 'Cant.' : 'Qty', 
+                             currentLang === 'es' ? 'Monto' : 'Amount', 
+                             currentLang === 'es' ? 'Método' : 'Method', 
+                             currentLang === 'es' ? 'Estado' : 'Status']
                         ],
                         body: ventasTable,
                         theme: 'grid',
-                        headStyles: { fillColor: [46, 204, 113] }
+                        headStyles: { fillColor: [52, 199, 89] }
                     });
                 }
                 
-                // Guardar PDF
-                doc.save(`${selectorIdioma.value === 'es' ? 'Cierre' : 'Report'} ${fechaFiltro || 'Completo'}.pdf`);
+                doc.save(`Cierre ${fechaFiltro || 'Completo'}.pdf`);
+                showToast(getText('corte-generado'), 'success');
             }
-            
-            // Inicializar la aplicación
+
+            // Inicializar
             actualizarListaVentas();
             actualizarEstadisticas();
             actualizarMensajeVentas();
